@@ -8,9 +8,13 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  String welcomeText = 'Welcome to Inventory Manager';
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      body: Center(
+        child: Text(welcomeText),
+      ),
+    );
   }
 }

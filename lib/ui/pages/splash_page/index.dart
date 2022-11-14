@@ -16,15 +16,16 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
-  String welcomeText = 'Welcome to Inventory Manager';
-  void navigationPage() {
-    navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
-  }
+  String welcomeText = 'Welcome to Pilog';
+  // void navigationPage() {
+  //   navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
+  // }
 
   startTime() async {
     var duration = const Duration(seconds: 2);
     // await appSetUp();
-    return Timer(duration, navigationPage);
+    // return Timer(duration, navigationPage);
+    return Timer(duration, isAuthentication);
   }
 
   Future isAuthentication() async {
@@ -32,11 +33,18 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
       //walk through
       bool iswalkThroughComplete = await localStorage.getIsWalkThroughComplete();
       if (!iswalkThroughComplete) {
-        //go to get_started page and then permissions
-        // navigatorKey.currentState!.pushReplacementNamed(Routes.GET_STARTED);
+        await localStorage.setIsWalkThroughComplete(status: true);
+        if (kDebugMode) {
+          print('goto login now after splash');
+        }
+        //go to login
+        navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
       } else {
-        // only for special event
-        // await splashLoginModel?.initialLoad();
+        if (kDebugMode) {
+          print('goto home directly because already logged in');
+        }
+        //already loged in, go to home
+        navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
       }
     } catch (err) {
       if (kDebugMode) {

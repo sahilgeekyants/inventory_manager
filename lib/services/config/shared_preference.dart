@@ -53,9 +53,9 @@ class MyLocalStorage {
   }
 
   //get started
-  Future<bool?> setIsWalkThroughComplete() async {
+  Future<bool?> setIsWalkThroughComplete({bool status = true}) async {
     _prefs = await SharedPreferences.getInstance();
-    return _prefs.setBool("is_walk_through", true);
+    return _prefs.setBool("is_walk_through", status);
   }
 
   //get started

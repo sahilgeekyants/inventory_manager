@@ -90,17 +90,32 @@ class InventoryRepository {
         Response response = await HttpService.httpRequests(url, ApiRequestType.POST, body: jsonEncode(body));
         if (kDebugMode) {
           print('logout responseStatus : ${response.responseStatus}');
+          print('logout response, status : ${response.status}');
+          print('response.body is String : ${response.body is String}');
+          // ignore: unrelated_type_equality_checks
+          print('response.body == Success : ${response.body == 'Success'}');
         }
-        if (response.status!) {
+        // if (response.status!) {
+        //here in logout api response body is "Success" so this causes error in jsonDecode
+        //so using response status to check success
+        // if (response.responseStatus! == 200 && response.body is String && response.body == 'Success') {
+        if (response.responseStatus! == 200) {
+          if (kDebugMode) {
+            print("logout success status in repository with 200 status");
+          }
           // If the call to the server was successful
           //save in sharedPref here
           localStorage.clearUserAndToken();
           return Response(
             status: true,
             body: response.body,
+            // body: ResponseBody(data: '', meta: {}),
             message: ToastMessages.succesMessage["success"],
           );
         } else {
+          if (kDebugMode) {
+            print("logout failed status in repository");
+          }
           // If that call was not successful, then return the error response
           return response;
         }

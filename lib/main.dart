@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // primarySwatch: Colors.blue,
-        primarySwatch: white,
+        primarySwatch: Colors.blue,
+        // primarySwatch: white,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: const SplashPage(),

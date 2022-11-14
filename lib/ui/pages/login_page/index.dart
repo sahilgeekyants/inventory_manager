@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                           icon: Icon(
                             Icons.person,
                           ),
-                          hintText: 'Email ID',
+                          hintText: 'Username',
                         ),
                       ),
                     ),

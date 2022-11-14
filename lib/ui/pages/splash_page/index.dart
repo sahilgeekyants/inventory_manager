@@ -69,7 +69,14 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(welcomeText),
+        child: Text(
+          welcomeText,
+          style: TextStyle(
+            fontSize: 17.toFont,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
       ),
     );
   }

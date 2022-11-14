@@ -130,11 +130,16 @@ class InventoryRepository {
         return Response(status: false, body: null, message: e.toString());
       }
     } else {
-      //Empty response
+      if (kDebugMode) {
+        print('username is not present in local storage, so logout user');
+      }
+      //username is not present in local storage
+      //give logout success state
+      localStorage.clearUserAndToken();
       return Response(
-        status: false,
-        body: null,
-        message: ToastMessages.errorMessage["emptyData"],
+        status: true,
+        body: ResponseBody(data: '', meta: {}),
+        message: ToastMessages.succesMessage["success"],
       );
     }
   }

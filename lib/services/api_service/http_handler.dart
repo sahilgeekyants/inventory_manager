@@ -131,7 +131,7 @@ class _HttpServiceHelper {
     if (errorMessage != null) {
       responseMessage = errorMessage;
     } else if (errorResponse != null && errorResponse.body != null) {
-      responseMessage = "akanksha error";
+      responseMessage = "some error";
     }
     if (errorResponse != null) {
       if (kDebugMode) {

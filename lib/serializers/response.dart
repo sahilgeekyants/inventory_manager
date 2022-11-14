@@ -20,7 +20,7 @@ class Response {
     //check for not null body with statusCode other than 204 only
     if (json['response_status'] != 204 && (json['body'] != null)) {
       Map<String, dynamic> bodyResponse = jsonDecode(json['body']);
-      //parse cera response
+      //parse the response
       if (bodyResponse.containsKey("isSuccess")) {
         //check for success
         if (bodyResponse["isSuccess"]) {

@@ -47,7 +47,21 @@ class MyLocalStorage {
 
   Future clearUserAndToken() async {
     _prefs = await SharedPreferences.getInstance();
+    bool isPermissionRequestd = await getIsWalkThroughComplete();
     await _prefs.clear();
+    _prefs.setBool("is_walk_through", isPermissionRequestd);
+  }
+
+  //get started
+  Future<bool?> setIsWalkThroughComplete() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.setBool("is_walk_through", true);
+  }
+
+  //get started
+  Future<bool> getIsWalkThroughComplete() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getBool("is_walk_through") ?? false;
   }
 
   // Future getUserId() async {

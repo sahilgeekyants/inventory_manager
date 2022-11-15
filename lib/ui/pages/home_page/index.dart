@@ -5,6 +5,7 @@ import 'package:inventory_manager/blocs/login/login_bloc.dart';
 import 'package:inventory_manager/blocs/login/login_events.dart';
 import 'package:inventory_manager/blocs/login/login_states.dart';
 import 'package:inventory_manager/main.dart';
+import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
@@ -96,9 +97,11 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 welcomeText,
                 style: TextStyle(
-                  fontSize: 17.toFont,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 21.toFont,
+                  fontWeight: FontWeight.w500,
                   color: Colors.black,
+                  fontFamily: CommonFonts.Poppins,
+                  // fontFamily: CommonFonts.PoppinsItalic,
                 ),
               ),
             ),

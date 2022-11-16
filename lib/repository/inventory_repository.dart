@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:inventory_manager/serializers/login_user.dart';
+import 'package:inventory_manager/serializers/product_info.dart';
 import 'package:inventory_manager/serializers/response.dart';
 import 'package:inventory_manager/serializers/response_body.dart';
 import 'package:inventory_manager/services/api_service/index.dart';
@@ -11,6 +12,8 @@ import 'package:inventory_manager/services/config/config.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/utils/constants/api_request_types.dart';
 import 'package:inventory_manager/utils/constants/messages.dart';
+
+import '../utils/constants/user_roles.dart';
 
 class InventoryRepository {
   // final String _apiKey = Config.apiKey;
@@ -141,6 +144,66 @@ class InventoryRepository {
         body: ResponseBody(data: '', meta: {}),
         message: ToastMessages.succesMessage["success"],
       );
+    }
+  }
+
+  //Data Fetch Api
+  Future<Response> getTableData({
+    required String userName,
+    required String orgId,
+    // required UserRole forRole,
+  }) async {
+    String url = "$_baseUrl/getApiRequestResultsData";
+    Map<String, dynamic> body = {
+      "apiReqId": "DACBAAC998424EECB1AF76D4FC342CEF",
+      "apiReqCols": "",
+      "apiReqWhereClause": "",
+      "apiReqOrgnId": orgId,
+      "apiReqUserId": userName,
+      "apiRetType": "JSON",
+    };
+    if (kDebugMode) {
+      print("url : $url");
+    }
+    try {
+      Response response = await HttpService.httpRequests(url, ApiRequestType.POST, body: jsonEncode(body));
+      if (kDebugMode) {
+        print('login responseStatus : ${response.responseStatus}');
+      }
+      if (response.status!) {
+        // If the call to the server was successful
+        Map<String, dynamic> parsedJson = response.body!.data;
+        if (parsedJson.isNotEmpty) {
+          //
+          ProductInfo productInfo = ProductInfo.fromJson(parsedJson);
+          // //save in sharedPref here
+          // localStorage.setAuthenticationInfo(userDetails: loginUser);
+          return Response(
+            status: true,
+            body: ResponseBody(data: productInfo, meta: response.body!.meta),
+            message: ToastMessages.succesMessage["success"],
+          );
+        } else {
+          //Empty response
+          return Response(
+            status: false,
+            body: null,
+            message: ToastMessages.errorMessage["emptyData"],
+          );
+        }
+      } else {
+        // If that call was not successful, then return the error response
+        return response;
+      }
+    } on Exception catch (e) {
+      String errMsg = e.toString();
+      if (kDebugMode) {
+        print('exception inside login api call : $errMsg}');
+      }
+      if (errMsg.contains(ToastMessages.errorMessage[""]!)) {
+        //
+      }
+      return Response(status: false, body: null, message: e.toString());
     }
   }
 }

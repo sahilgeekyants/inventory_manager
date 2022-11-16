@@ -6,4 +6,5 @@ class CommonColors {
   static const Color kBlueShadowColor = Color(0xffEAEDFF);
   static const Color kPrimaryTextColor = Color(0xff1C1D24);
   static const Color kTextWhiteColor = Color(0xffFFFFFF);
+  static const Color kTextColorLight = Color(0xff7d7d7d);
 }

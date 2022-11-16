@@ -8,7 +8,8 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -47,8 +48,8 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        // primarySwatch: white,
+        // primarySwatch: Colors.blue,
+        primarySwatch: white,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: const SplashPage(),

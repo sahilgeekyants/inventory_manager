@@ -7,6 +7,8 @@ import 'package:inventory_manager/blocs/login/login_events.dart';
 import 'package:inventory_manager/blocs/login/login_states.dart';
 import 'package:inventory_manager/main.dart';
 import 'package:inventory_manager/resources/common_assets.dart';
+import 'package:inventory_manager/resources/common_colors.dart';
+import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
@@ -25,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   late FocusNode passWordFocusNode;
   late String userNameVal;
   late String passwordVal;
+  late bool hidePassword;
   @override
   void initState() {
     super.initState();
@@ -35,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     passWordTextController = TextEditingController(text: passwordVal);
     userNameFocusNode = FocusNode();
     passWordFocusNode = FocusNode();
+    hidePassword = true;
   }
 
   @override
@@ -42,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     return BlocProvider<LoginBloc>(
       create: (BuildContext context) => _loginBloc,
       child: Scaffold(
+        backgroundColor: CommonColors.kPrimaryBlueColor,
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: Container(
@@ -57,10 +62,12 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 if (state is LoginSuccessState) {
                   if (kDebugMode) {
-                    print('in UI listener succcess - state : LoginSuccessState');
+                    print(
+                        'in UI listener succcess - state : LoginSuccessState');
                   }
                   //go to homePage
-                  navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
+                  navigatorKey.currentState!
+                      .pushReplacementNamed(Routes.homePath);
                 } else if (state is LoginFailedState) {
                   if (kDebugMode) {
                     print('in UI listener failed - state : LoginFailedState');
@@ -90,34 +97,72 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 return ListView(
                   children: [
-                    SizedBox(height: 40.toHeight),
+                    SizedBox(height: 20.toHeight),
                     Container(
-                      height: 180.toHeight,
-                      child: SvgPicture.asset(
-                        CommonAssets.loginImage,
+                      height: 280.toHeight,
+                      // child: SvgPicture.asset(
+                      //   CommonAssets.twoPersonGroupImage,
+                      // ),
+                      child: Image.asset(
+                        'assets/images/group_working_png.png',
                       ),
                     ),
-                    SizedBox(height: 40.toHeight),
-                    Container(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 25.toFont,
-                          fontWeight: FontWeight.w700,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Container(
+                        //   height: 30.toHeight,
+                        //   child: Image.asset(CommonAssets.logoPilogPng),
+                        // ),
+                        SizedBox(
+                          height: 10.toHeight,
                         ),
-                      ),
+                        Text(
+                          "Sign in to",
+                          style: TextStyle(
+                            fontFamily: CommonFonts.Poppins,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 32.toFont,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "Pilog Group",
+                          style: TextStyle(
+                            fontFamily: CommonFonts.Poppins,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20.toFont,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 40.toHeight),
+                    // Container(
+                    //   child: Text(
+                    //     'Login',
+                    //     style: TextStyle(
+                    //       fontSize: 25.toFont,
+                    //       fontWeight: FontWeight.w700,
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(height: 20.toHeight),
                     Container(
                       decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                        color: Colors.black,
-                        width: 1.0,
-                        style: BorderStyle.solid,
-                        strokeAlign: StrokeAlign.inside,
-                      ))),
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffB2B6B9),
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                            strokeAlign: StrokeAlign.inside,
+                          ),
+                        ),
+                      ),
                       child: TextField(
+                        style: TextStyle(
+                          fontSize: 14.toFont,
+                          color: Colors.white,
+                        ),
                         controller: userNameTextController,
                         focusNode: userNameFocusNode,
                         keyboardType: TextInputType.text,
@@ -137,30 +182,37 @@ class _LoginPageState extends State<LoginPage> {
                             userNameFocusNode.requestFocus();
                           }
                         },
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          icon: Icon(
-                            Icons.person,
-                          ),
-                          hintText: 'Username',
-                        ),
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              Icons.mail_outline,
+                              color: Colors.white,
+                              size: 14.toFont,
+                            ),
+                            hintText: 'Enter email or username',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.toFont,
+                            )),
                       ),
                     ),
-                    SizedBox(height: 40.toHeight),
+                    SizedBox(height: 30.toHeight),
                     Container(
                       decoration: const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
-                        color: Colors.black,
+                        color: Color(0xffB2B6B9),
                         width: 1.0,
                         style: BorderStyle.solid,
                         strokeAlign: StrokeAlign.inside,
                       ))),
                       child: TextField(
+                        style:
+                            TextStyle(fontSize: 14.toFont, color: Colors.white),
                         controller: passWordTextController,
                         focusNode: passWordFocusNode,
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
+                        obscureText: hidePassword,
                         onTap: () {
                           if (passWordFocusNode.hasFocus) {
                             passWordFocusNode.unfocus();
@@ -177,16 +229,51 @@ class _LoginPageState extends State<LoginPage> {
                         onSubmitted: (String val) {
                           passwordVal = val;
                         },
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          icon: Icon(
-                            Icons.lock,
-                          ),
-                          hintText: 'Password',
-                        ),
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  hidePassword = !hidePassword;
+                                });
+                              },
+                              icon: Icon(
+                                hidePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                size: 16.toFont,
+                                color: Colors.white,
+                              ),
+                            ),
+                            icon: Icon(
+                              Icons.lock_outline,
+                              color: Colors.white,
+                              size: 14.toFont,
+                            ),
+                            hintText: 'Enter password',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.toFont,
+                            )),
                       ),
                     ),
-                    SizedBox(height: 40.toHeight),
+                    SizedBox(height: 10.toHeight),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Forgot Password ?",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.toFont,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.toHeight),
                     Container(
                       alignment: AlignmentDirectional.center,
                       child: TextButton(
@@ -200,54 +287,41 @@ class _LoginPageState extends State<LoginPage> {
                             ));
                           },
                           child: Container(
-                            height: 40.toHeight,
+                            height: 55.toHeight,
                             decoration: BoxDecoration(
-                                color: Colors.blue,
-                                border: Border.all(
-                                  color: Colors.blue,
-                                  width: 1.0,
-                                  style: BorderStyle.solid,
-                                  strokeAlign: StrokeAlign.inside,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(55529242),
+                                  blurRadius: 24.toHeight,
+                                  offset: const Offset(
+                                    0,
+                                    14,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(10)),
+                              ],
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1.0,
+                                style: BorderStyle.solid,
+                                strokeAlign: StrokeAlign.inside,
+                              ),
+                              borderRadius: BorderRadius.circular(9.toHeight),
+                            ),
                             child: Container(
                               width: ScreenUtil.screenWidth - 60.toWidth,
                               child: Center(
                                 child: Text(
                                   'Login',
                                   style: TextStyle(
-                                    fontSize: 15.toFont,
+                                    fontSize: 16.toFont,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                                    color: CommonColors.kPrimaryBlueColor,
                                   ),
                                 ),
                               ),
                             ),
                           )),
-                    ),
-                    SizedBox(height: 40.toHeight),
-                    Container(
-                      alignment: AlignmentDirectional.center,
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'New to PilogGroup? ',
-                          style: TextStyle(
-                            fontSize: 15.toFont,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Register',
-                              style: TextStyle(
-                                fontSize: 15.toFont,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 );

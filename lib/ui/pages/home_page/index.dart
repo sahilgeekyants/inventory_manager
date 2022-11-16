@@ -30,6 +30,15 @@ class _HomePageState extends State<HomePage> {
     "Area Name",
     "Area Name",
   ];
+  List infoItemData = [
+    "B_001",
+    "Entity",
+    "Region",
+    "Bangalore",
+    "Area Name",
+    "Area Name",
+    "Area Name",
+  ];
   String welcomeText = 'Welcome to Pilog';
   late LoginBloc _loginBloc;
   @override
@@ -38,20 +47,30 @@ class _HomePageState extends State<HomePage> {
     _loginBloc = LoginBloc();
   }
 
-  List<Widget> _buildCells(int count) {
+  List<Widget> _buildCells(int count, String? data) {
     return List.generate(count, (index) {
+      print(index);
       return Container(
         alignment: Alignment.center,
         width: 120.toWidth,
         height: 60.toHeight,
         color: Colors.white,
-        child: Text(
-          "${index + 1}",
-          style: const TextStyle(
-            fontFamily: CommonFonts.Poppins,
-            color: CommonColors.kTextColorLight,
-          ),
-        ),
+        child: index != 2
+            ? Text(
+                data ?? infoItemData[index],
+                style: const TextStyle(
+                  fontFamily: CommonFonts.Poppins,
+                  color: CommonColors.kTextColorLight,
+                ),
+              )
+            : DropdownButton(
+                items: const [
+                  DropdownMenuItem(
+                    child: Text("Region"),
+                  ),
+                ],
+                onChanged: null,
+              ),
       );
     });
   }
@@ -60,7 +79,7 @@ class _HomePageState extends State<HomePage> {
     return List.generate(
       count,
       (index) => Row(
-        children: [..._buildCells(recordInfoItems.length)],
+        children: [..._buildCells(recordInfoItems.length, null)],
       ),
     );
   }
@@ -239,9 +258,7 @@ class _HomePageState extends State<HomePage> {
                                                   ],
                                                 ),
                                               ),
-                                              ..._buildCells(
-                                                20,
-                                              ),
+                                              ..._buildCells(20, "0123456789"),
                                             ],
                                           ),
                                           Flexible(

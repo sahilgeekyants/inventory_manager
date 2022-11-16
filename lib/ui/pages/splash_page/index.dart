@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_manager/main.dart';
+import 'package:inventory_manager/resources/common_assets.dart';
 import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
@@ -17,14 +18,10 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   String welcomeText = 'Welcome to Pilog';
-  // void navigationPage() {
-  //   navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
-  // }
 
   startTime() async {
     var duration = const Duration(seconds: 2);
     // await appSetUp();
-    // return Timer(duration, navigationPage);
     return Timer(duration, isAuthentication);
   }
 
@@ -68,14 +65,28 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          welcomeText,
-          style: TextStyle(
-            fontSize: 17.toFont,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
+      body: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 20.toHeight,
+          horizontal: 30.toWidth,
+        ),
+        child: ListView(
+          children: [
+            SizedBox(height: 90.toHeight),
+            Container(
+              height: 60.toHeight,
+              child: Image.asset(
+                CommonAssets.logoPilogPng,
+              ),
+            ),
+            SizedBox(height: 100.toHeight),
+            Container(
+              height: 300.toHeight,
+              child: Image.asset(
+                CommonAssets.twoPersonGroupPngImage,
+              ),
+            ),
+          ],
         ),
       ),
     );

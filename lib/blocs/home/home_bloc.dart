@@ -15,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetUserDataEvent>(_handleGetUserDataEvent);
   }
   final InventoryRepository _repository = InventoryRepository();
+  List<ProductInfo> productslist = [];
 
   //
   Future<void> _handleGetUserDataEvent(
@@ -36,7 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           print('getTableData function returned status : ${response.status}');
         }
         if (response.status!) {
-          List<ProductInfo> productslist = response.body!.data;
+          productslist = response.body!.data;
           emit(GetUserDataSuccessState(productslist: productslist));
         } else {
           emit(GetUserDataFailedState(error: response.message ?? 'Data fetch failed'));

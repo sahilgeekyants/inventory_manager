@@ -39,9 +39,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildCells(int count) {
-    return List.generate(
-      count,
-      (index) => Container(
+    return List.generate(count, (index) {
+      return Container(
         alignment: Alignment.center,
         width: 120.toWidth,
         height: 60.toHeight,
@@ -53,8 +52,8 @@ class _HomePageState extends State<HomePage> {
             color: CommonColors.kTextColorLight,
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   List<Widget> _buildRows(int count) {
@@ -213,7 +212,9 @@ class _HomePageState extends State<HomePage> {
                                             alignment: Alignment.center,
                                             width: 120.toWidth,
                                             height: 60.toHeight,
-                                            color: Colors.blue,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.blue,
+                                            ),
                                             child: const Text(
                                               "Record No",
                                               style: TextStyle(
@@ -222,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                           ),
-                                          ..._buildCells(20)
+                                          ..._buildCells(20),
                                         ],
                                       ),
                                       Flexible(
@@ -232,6 +233,26 @@ class _HomePageState extends State<HomePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              Row(
+                                                children: List.generate(
+                                                    recordInfoItems.length,
+                                                    (index) {
+                                                  return Container(
+                                                    alignment: Alignment.center,
+                                                    width: 120.toWidth,
+                                                    height: 60.toHeight,
+                                                    color: Colors.blue,
+                                                    child: Text(
+                                                      "${recordInfoItems[index]}",
+                                                      style: const TextStyle(
+                                                        fontFamily:
+                                                            CommonFonts.Poppins,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }),
+                                              ),
                                               ..._buildRows(
                                                 20,
                                               )

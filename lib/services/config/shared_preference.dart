@@ -29,6 +29,16 @@ class MyLocalStorage {
     return _prefs.getString("self_user_name");
   }
 
+  Future<String?> getUserOrgId() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString("self_org_id");
+  }
+
+  Future<String?> getUserRole() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString("self_role");
+  }
+
   // Future setToken(token) async {
   //   _prefs = await SharedPreferences.getInstance();
   //   _prefs.setString("access_token", token);

@@ -200,66 +200,111 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               children: [
                                 SingleChildScrollView(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Column(
+                                  child: Stack(
+                                    children: [
+                                      Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            alignment: Alignment.center,
-                                            width: 120.toWidth,
-                                            height: 60.toHeight,
-                                            decoration: const BoxDecoration(
-                                              color: Colors.blue,
-                                            ),
-                                            child: const Text(
-                                              "Record No",
-                                              style: TextStyle(
-                                                fontFamily: CommonFonts.Poppins,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          ..._buildCells(20),
-                                        ],
-                                      ),
-                                      Flexible(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Column(
+                                        children: <Widget>[
+                                          Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
-                                                children: List.generate(
-                                                    recordInfoItems.length,
-                                                    (index) {
-                                                  return Container(
-                                                    alignment: Alignment.center,
-                                                    width: 120.toWidth,
-                                                    height: 60.toHeight,
-                                                    color: Colors.blue,
-                                                    child: Text(
-                                                      "${recordInfoItems[index]}",
-                                                      style: const TextStyle(
-                                                        fontFamily:
-                                                            CommonFonts.Poppins,
-                                                        color: Colors.white,
+                                              Container(
+                                                alignment: Alignment.center,
+                                                width: 120.toWidth,
+                                                height: 60.toHeight,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.blue,
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    const Expanded(
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Record No",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                CommonFonts
+                                                                    .Poppins,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
-                                                  );
-                                                }),
+                                                    Container(
+                                                      width: 1.toWidth,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              ..._buildRows(
+                                              ..._buildCells(
                                                 20,
+                                              ),
+                                            ],
+                                          ),
+                                          Flexible(
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: List.generate(
+                                                      recordInfoItems.length,
+                                                      (index) {
+                                                        return Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          width: 120.toWidth,
+                                                          height: 60.toHeight,
+                                                          color: Colors.blue,
+                                                          child: Text(
+                                                            "${recordInfoItems[index]}",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  CommonFonts
+                                                                      .Poppins,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  ..._buildRows(
+                                                    20,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Positioned(
+                                        child: Container(
+                                          width: 120.toWidth,
+                                          height: 1260.toHeight,
+                                          decoration: const BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0x20000000),
+                                                blurStyle: BlurStyle.outer,
+                                                blurRadius: 20,
+                                                spreadRadius: 1,
+                                                offset: Offset(
+                                                  0,
+                                                  0,
+                                                ),
                                               )
                                             ],
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -270,21 +315,8 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   )
-                  // Expanded(child: child),
                 ],
               ),
-              // Center(
-              //   child: Text(
-              //     welcomeText,
-              //     style: TextStyle(
-              //       fontSize: 21.toFont,
-              //       fontWeight: FontWeight.w500,
-              //       color: Colors.black,
-              //       fontFamily: CommonFonts.Poppins,
-              //       // fontFamily: CommonFonts.PoppinsItalic,
-              //     ),
-              //   ),
-              // ),
             ),
           ),
         ),

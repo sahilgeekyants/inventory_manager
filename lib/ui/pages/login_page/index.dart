@@ -64,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
                   print('in UI listener succcess - state : LoginSuccessState');
                 }
                 //go to homePage
-                navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
+                navigatorKey.currentState!
+                    .pushReplacementNamed(Routes.homePath);
               } else if (state is LoginFailedState) {
                 if (kDebugMode) {
                   print('in UI listener failed - state : LoginFailedState');
@@ -195,7 +196,8 @@ class _LoginPageState extends State<LoginPage> {
                       strokeAlign: StrokeAlign.inside,
                     ))),
                     child: TextField(
-                      style: TextStyle(fontSize: 14.toFont, color: Colors.white),
+                      style:
+                          TextStyle(fontSize: 14.toFont, color: Colors.white),
                       controller: passWordTextController,
                       focusNode: passWordFocusNode,
                       keyboardType: TextInputType.visiblePassword,
@@ -225,7 +227,9 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                             icon: Icon(
-                              hidePassword ? Icons.visibility_off : Icons.visibility,
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               size: 16.toFont,
                               color: Colors.white,
                             ),
@@ -262,52 +266,87 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     alignment: AlignmentDirectional.center,
                     child: TextButton(
-                        onPressed: () {
-                          userNameFocusNode.unfocus();
-                          passWordFocusNode.unfocus();
-                          //call the login api here
-                          _loginBloc.add(LoginButtonPressed(
-                            userName: userNameVal,
-                            password: passwordVal,
-                          ));
-                        },
-                        child: Container(
-                          height: 55.toHeight,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(55529242),
-                                blurRadius: 24.toHeight,
-                                offset: const Offset(
-                                  0,
-                                  14,
-                                ),
+                      onPressed: () {
+                        userNameFocusNode.unfocus();
+                        passWordFocusNode.unfocus();
+                        //call the login api here
+                        _loginBloc.add(LoginButtonPressed(
+                          userName: userNameVal,
+                          password: passwordVal,
+                        ));
+                      },
+                      child: Container(
+                        height: 55.toHeight,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(55529242),
+                              blurRadius: 24.toHeight,
+                              offset: const Offset(
+                                0,
+                                14,
                               ),
-                            ],
+                            ),
+                          ],
+                          color: Colors.white,
+                          border: Border.all(
                             color: Colors.white,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 1.0,
-                              style: BorderStyle.solid,
-                              strokeAlign: StrokeAlign.inside,
-                            ),
-                            borderRadius: BorderRadius.circular(9.toHeight),
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                            strokeAlign: StrokeAlign.inside,
                           ),
-                          child: Container(
-                            width: ScreenUtil.screenWidth - 60.toWidth,
-                            child: Center(
-                              child: Text(
-                                'Login',
-                                style: TextStyle(
-                                  fontSize: 16.toFont,
-                                  fontWeight: FontWeight.w600,
-                                  color: CommonColors.kPrimaryBlueColor,
-                                ),
+                          borderRadius: BorderRadius.circular(9.toHeight),
+                        ),
+                        child: Container(
+                          width: ScreenUtil.screenWidth - 60.toWidth,
+                          child: Center(
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                fontSize: 16.toFont,
+                                fontWeight: FontWeight.w600,
+                                color: CommonColors.kPrimaryBlueColor,
                               ),
                             ),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ),
+                  // SizedBox(height: 10.toHeight),
+                  Container(
+                    height: 50.toWidth,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: CommonFonts.Poppins,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.toFont,
+                          ),
+                        ),
+                        TextButton(
+                          //
+                          //
+                          //Implement Register New User Logic Here
+                          onPressed: () {},
+                          child: Text(
+                            "Register here.",
+                            style: TextStyle(
+                              color: const Color(0xffFF0000),
+                              fontFamily: CommonFonts.Poppins,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14.toFont,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               );
             },

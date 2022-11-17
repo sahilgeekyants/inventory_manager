@@ -88,9 +88,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
       create: (BuildContext context) => _loginBloc,
-      child: SafeArea(
-        child: Scaffold(
-          body: BlocListener<LoginBloc, LoginState>(
+      child: Scaffold(
+        body: SafeArea(
+          child: BlocListener<LoginBloc, LoginState>(
             listener: (context, LoginState state) async {
               if (kDebugMode) {
                 print('in UI listener - state : $state');
@@ -102,8 +102,7 @@ class _HomePageState extends State<HomePage> {
                 //remove all data of user from app
                 await localStorage.setIsWalkThroughComplete(status: false);
                 //go to loginPage
-                navigatorKey.currentState!
-                    .pushReplacementNamed(Routes.loginPath);
+                navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
               } else if (state is LogoutFailedState) {
                 if (kDebugMode) {
                   print('in UI listener failed - state : LogoutFailedState');
@@ -222,12 +221,10 @@ class _HomePageState extends State<HomePage> {
                                   child: Stack(
                                     children: [
                                       Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 alignment: Alignment.center,
@@ -243,9 +240,7 @@ class _HomePageState extends State<HomePage> {
                                                         child: Text(
                                                           "Record No",
                                                           style: TextStyle(
-                                                            fontFamily:
-                                                                CommonFonts
-                                                                    .Poppins,
+                                                            fontFamily: CommonFonts.Poppins,
                                                             color: Colors.white,
                                                           ),
                                                         ),
@@ -265,28 +260,22 @@ class _HomePageState extends State<HomePage> {
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
                                                     children: List.generate(
                                                       recordInfoItems.length,
                                                       (index) {
                                                         return Container(
-                                                          alignment:
-                                                              Alignment.center,
+                                                          alignment: Alignment.center,
                                                           width: 120.toWidth,
                                                           height: 60.toHeight,
                                                           color: Colors.blue,
                                                           child: Text(
                                                             "${recordInfoItems[index]}",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontFamily:
-                                                                  CommonFonts
-                                                                      .Poppins,
-                                                              color:
-                                                                  Colors.white,
+                                                            style: const TextStyle(
+                                                              fontFamily: CommonFonts.Poppins,
+                                                              color: Colors.white,
                                                             ),
                                                           ),
                                                         );

@@ -8,11 +8,11 @@ import 'login_events.dart';
 import 'login_states.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(const LoginInitialState(isLoading: false)) {
+  LoginBloc({required this.repository}) : super(const LoginInitialState(isLoading: false)) {
     on<LoginButtonPressed>(mapLogInUserToState);
     on<LogOutButtonPressed>(mapLogOutUserToState);
   }
-  final InventoryRepository _repository = InventoryRepository();
+  final InventoryRepository repository;
 
   //
   Future<void> mapLogInUserToState(
@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (kDebugMode) {
         print('login function calling in bloc');
       }
-      response = await _repository.userLogin(userName: event.userName, password: event.password);
+      response = await repository.userLogin(userName: event.userName, password: event.password);
       if (kDebugMode) {
         print('login function returned resoponse : ${response.body?.data ?? ''}');
         print('login function returned status : ${response.status}');
@@ -54,7 +54,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (kDebugMode) {
         print('logout function calling in bloc');
       }
-      response = await _repository.userLogOut();
+      response = await repository.userLogOut();
       if (kDebugMode) {
         print('logout function returned resoponse : ${response.body?.data ?? ''}');
         print('logout function returned status : ${response.status}');

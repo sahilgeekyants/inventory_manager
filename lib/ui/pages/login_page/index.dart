@@ -6,6 +6,7 @@ import 'package:inventory_manager/blocs/login/login_bloc.dart';
 import 'package:inventory_manager/blocs/login/login_events.dart';
 import 'package:inventory_manager/blocs/login/login_states.dart';
 import 'package:inventory_manager/main.dart';
+import 'package:inventory_manager/models/bloc_models.dart';
 import 'package:inventory_manager/resources/common_assets.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
@@ -13,7 +14,11 @@ import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final LoginPageBlocModel loginPageBlocModel;
+  const LoginPage({
+    super.key,
+    required this.loginPageBlocModel,
+  });
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -31,7 +36,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _loginBloc = LoginBloc();
+    // _loginBloc = LoginBloc();
+    _loginBloc = widget.loginPageBlocModel.loginBloc;
     userNameVal = '';
     passwordVal = '';
     userNameTextController = TextEditingController(text: userNameVal);
@@ -64,8 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                   print('in UI listener succcess - state : LoginSuccessState');
                 }
                 //go to homePage
-                navigatorKey.currentState!
-                    .pushReplacementNamed(Routes.homePath);
+                navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
               } else if (state is LoginFailedState) {
                 if (kDebugMode) {
                   print('in UI listener failed - state : LoginFailedState');
@@ -196,8 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                       strokeAlign: StrokeAlign.inside,
                     ))),
                     child: TextField(
-                      style:
-                          TextStyle(fontSize: 14.toFont, color: Colors.white),
+                      style: TextStyle(fontSize: 14.toFont, color: Colors.white),
                       controller: passWordTextController,
                       focusNode: passWordFocusNode,
                       keyboardType: TextInputType.visiblePassword,
@@ -227,9 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                             icon: Icon(
-                              hidePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+                              hidePassword ? Icons.visibility_off : Icons.visibility,
                               size: 16.toFont,
                               color: Colors.white,
                             ),

@@ -11,10 +11,10 @@ import 'home_events.dart';
 import 'home_states.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeInitialState(isLoading: false)) {
+  HomeBloc({required this.repository}) : super(const HomeInitialState(isLoading: false)) {
     on<GetUserDataEvent>(_handleGetUserDataEvent);
   }
-  final InventoryRepository _repository = InventoryRepository();
+  final InventoryRepository repository;
   List<ProductInfo> productslist = [];
 
   //
@@ -31,7 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (kDebugMode) {
           print('getTableData function calling in bloc');
         }
-        response = await _repository.getTableData(userName: userName!, orgId: orgId!);
+        response = await repository.getTableData(userName: userName!, orgId: orgId!);
         if (kDebugMode) {
           print('getTableData function returned resoponse : ${response.body?.data ?? ''}');
           print('getTableData function returned status : ${response.status}');

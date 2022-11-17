@@ -5,6 +5,7 @@ import 'package:inventory_manager/blocs/login/login_bloc.dart';
 import 'package:inventory_manager/blocs/login/login_events.dart';
 import 'package:inventory_manager/blocs/login/login_states.dart';
 import 'package:inventory_manager/main.dart';
+import 'package:inventory_manager/models/bloc_models.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
@@ -12,7 +13,11 @@ import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final HomePageBlocModel homePageBlocModel;
+  const HomePage({
+    super.key,
+    required this.homePageBlocModel,
+  });
 
   @override
   State<StatefulWidget> createState() => _HomePageState();
@@ -41,7 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loginBloc = LoginBloc();
+    // _loginBloc = LoginBloc();
+    _loginBloc = widget.homePageBlocModel.loginBloc;
   }
 
   List<Widget> _buildCells(int count, String? data) {

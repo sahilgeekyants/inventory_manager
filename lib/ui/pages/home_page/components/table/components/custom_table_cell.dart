@@ -6,17 +6,23 @@ import 'package:inventory_manager/utils/screen_util.dart';
 class CustomTableCell extends StatelessWidget {
   final int index;
   final bool isRecordNo;
-  final List<String> data;
+  final List<String?> data;
+  final bool isDropDown;
   const CustomTableCell({
     Key? key,
     required this.index,
     required this.isRecordNo,
     required this.data,
+    required this.isDropDown,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("$index, ${data[index]}");
     return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 10.toWidth,
+      ),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -50,25 +56,49 @@ class CustomTableCell extends StatelessWidget {
         color: CommonColors.kTextWhiteColor,
       ),
       alignment: Alignment.center,
-      width: 120.toWidth,
+      width: 140.toWidth,
       height: 50.toHeight,
-      child: index != 2 || isRecordNo
+      child: isRecordNo
           ? Text(
-              data[index],
+              data[index]!,
               style: TextStyle(
-                  fontFamily: CommonFonts.Poppins,
-                  color: CommonColors.kTextColorLight,
-                  fontSize: 12.toFont,
-                  fontWeight: FontWeight.w400),
+                overflow: TextOverflow.ellipsis,
+                fontFamily: CommonFonts.Poppins,
+                color: CommonColors.kTextColorLight,
+                fontSize: 12.toFont,
+                fontWeight: FontWeight.w400,
+              ),
             )
-          : DropdownButton(
-              items: const [
-                DropdownMenuItem(
-                  child: Text("Region"),
-                ),
-              ],
-              onChanged: null,
-            ),
+          : data[index] != null
+              ? isDropDown
+                  ? DropdownButton(
+                      items: List.generate(data[index]!.split(',').length,
+                          (index) {
+                        return DropdownMenuItem(
+                            child: Text(
+                          data[index]!.split(',')[index],
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontFamily: CommonFonts.Poppins,
+                            color: CommonColors.kTextColorLight,
+                            fontSize: 12.toFont,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ));
+                      }),
+                      onChanged: ((value) {}),
+                    )
+                  : Text(
+                      data[index]!,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontFamily: CommonFonts.Poppins,
+                        color: CommonColors.kTextColorLight,
+                        fontSize: 12.toFont,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
+              : Text("-"),
     );
   }
 }

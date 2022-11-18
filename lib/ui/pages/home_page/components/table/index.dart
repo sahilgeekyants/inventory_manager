@@ -3,6 +3,7 @@ import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_column_sort_button.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_shadow.dart';
+import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 import 'components/custom_table_cell.dart';
 
@@ -36,7 +37,7 @@ class _CustomTableState extends State<CustomTable> {
     super.didUpdateWidget(oldWidget);
   }
 
-  List<Widget> _buildCells(int count, List<String> data, bool isRecordNo) {
+  List<Widget> _buildCells(int count, List<String?> data, bool isRecordNo) {
     return List<Widget>.generate(
       count,
       (index) {
@@ -44,6 +45,9 @@ class _CustomTableState extends State<CustomTable> {
           index: index,
           isRecordNo: isRecordNo,
           data: data,
+          isDropDown: ProductFieldsData.isFieldTypeDropDown(
+            ProductFieldsData.getRecordFieldData(properties[index])[1],
+          ),
         );
       },
     );
@@ -59,9 +63,6 @@ class _CustomTableState extends State<CustomTable> {
             List.generate(
               properties.length,
               (index2) {
-                if (properties[index2].toLowerCase() == "region") {
-                  return "Region";
-                }
                 return allRecords[allRecords.keys.toList()[index]]![
                     properties[index2]];
               },
@@ -94,7 +95,7 @@ class _CustomTableState extends State<CustomTable> {
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          width: 120.toWidth,
+                          width: 140.toWidth,
                           height: 50.toHeight,
                           decoration: const BoxDecoration(
                             color: CommonColors.kSecondaryBLueColor,
@@ -107,7 +108,7 @@ class _CustomTableState extends State<CustomTable> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       const Text(
-                                        "Record No",
+                                        "Serial No",
                                         style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
@@ -131,11 +132,12 @@ class _CustomTableState extends State<CustomTable> {
                           ),
                         ),
                         ..._buildCells(
-                            allRecords.keys.toList().length,
-                            List.generate(allRecords.length, (index) {
-                              return allRecords.keys.toList()[index];
-                            }),
-                            true),
+                          allRecords.keys.toList().length,
+                          List.generate(allRecords.length, (index) {
+                            return allRecords.keys.toList()[index];
+                          }),
+                          true,
+                        ),
                       ],
                     ),
                   ),
@@ -151,24 +153,35 @@ class _CustomTableState extends State<CustomTable> {
                               (index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  width: 120.toWidth,
+                                  width: 140.toWidth,
                                   height: 50.toHeight,
                                   color: CommonColors.kSecondaryBLueColor,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        properties[index],
-                                        style: const TextStyle(
-                                          fontFamily: CommonFonts.Poppins,
-                                          color: CommonColors.kTextWhiteColor,
+                                      const Spacer(
+                                        flex: 1,
+                                      ),
+                                      Expanded(
+                                        flex: 5,
+                                        child: Text(
+                                          ProductFieldsData.getRecordFieldData(
+                                              properties[index])[0],
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontFamily: CommonFonts.Poppins,
+                                            color: CommonColors.kTextWhiteColor,
+                                          ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 10.toWidth,
+                                      Expanded(
+                                        flex: 1,
+                                        child: TableColumnSortButton(
+                                          onPressed: () {},
+                                        ),
                                       ),
-                                      TableColumnSortButton(
-                                        onPressed: () {},
+                                      const Spacer(
+                                        flex: 1,
                                       ),
                                     ],
                                   ),

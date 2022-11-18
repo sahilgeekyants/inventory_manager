@@ -238,7 +238,9 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                           icon: Icon(
-                            hidePassword ? Icons.visibility_off : Icons.visibility,
+                            hidePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             size: 16.toFont,
                             color: Colors.white,
                           ),
@@ -280,8 +282,8 @@ class _LoginPageState extends State<LoginPage> {
                       passWordFocusNode.unfocus();
                       //call the login api here
                       _loginBloc.add(LoginButtonPressed(
-                        userName: userNameVal,
-                        password: passwordVal,
+                        userName: "AJAY_IDAM_SURVEYOR_QC",
+                        password: "P@ssw0rd",
                       ));
                     },
                     child: Container(

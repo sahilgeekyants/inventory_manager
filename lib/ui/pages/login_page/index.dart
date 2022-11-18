@@ -58,14 +58,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // MultiBlocProvider(
-        //   providers: [
-        //     BlocProvider<LoginBloc>(create: (BuildContext context) => _loginBloc),
-        //     BlocProvider<HomeBloc>(create: (BuildContext context) => _homeBloc),
-        //   ],
-        //   child:
-        Scaffold(
+    return Scaffold(
       backgroundColor: CommonColors.kPrimaryBlueColor,
       resizeToAvoidBottomInset: true,
       body: Container(
@@ -74,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
           horizontal: 30.toWidth,
         ),
         child: BlocConsumer<LoginBloc, LoginState>(
-          // bloc: _loginBloc,
+          bloc: _loginBloc,
           listener: (context, LoginState state) {
             if (kDebugMode) {
               print('in UI listener - state : $state');
@@ -83,8 +76,6 @@ class _LoginPageState extends State<LoginPage> {
               if (kDebugMode) {
                 print('in UI listener succcess - state : LoginSuccessState');
               }
-              // //add event here for homeBloc to fetch data
-              // _homeBloc.add(const GetUserDataEvent());
               //go to homePage
               navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
             } else if (state is LoginFailedState) {
@@ -370,7 +361,6 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
       ),
-      // ),
     );
   }
 }

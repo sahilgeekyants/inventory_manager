@@ -2,11 +2,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:inventory_manager/repository/inventory_repository.dart';
-import 'package:inventory_manager/serializers/login_user.dart';
-import 'package:inventory_manager/serializers/product_info.dart';
+import 'package:inventory_manager/serializers/products_list.dart';
 import 'package:inventory_manager/serializers/response.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/services/helpers/extensions.dart';
+import 'package:inventory_manager/utils/constants/user_roles.dart';
+import 'package:inventory_manager/utils/util.dart';
 import 'home_events.dart';
 import 'home_states.dart';
 
@@ -15,7 +16,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetUserDataEvent>(_handleGetUserDataEvent);
   }
   final InventoryRepository repository;
-  List<ProductInfo> productslist = [];
+  // List<ProductInfo> productslist = [];
+  ProductsList? productsList;
 
   //
   Future<void> _handleGetUserDataEvent(
@@ -27,18 +29,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       String? userName = await localStorage.getUserName();
       String? orgId = await localStorage.getUserOrgId();
+      bool isRoleQC = await isUserRoleQC();
       if (userName.isNotNullOrEmpty && orgId.isNotNullOrEmpty) {
         if (kDebugMode) {
           print('getTableData function calling in bloc');
         }
-        response = await repository.getTableData(userName: userName!, orgId: orgId!);
+        response = await repository.getTableData(
+          userName: userName!,
+          orgId: orgId!,
+          forRole: isRoleQC ? UserRole.SURVEYOR_QC : UserRole.SURVEYOR,
+        );
         if (kDebugMode) {
           print('getTableData function returned resoponse : ${response.body?.data ?? ''}');
           print('getTableData function returned status : ${response.status}');
         }
         if (response.status!) {
-          productslist = response.body!.data;
-          emit(GetUserDataSuccessState(productslist: productslist));
+          if (response.body!.data is ProductsList) {
+            productsList = response.body!.data;
+            // productslist = response.body!.data;
+            emit(GetUserDataSuccessState(productslist: productsList!));
+          } else if (response.body!.data is List) {
+            //empty data state
+            emit(const GetUserDataEmptyState(response: 'User don\'t have any data'));
+          }
         } else {
           emit(GetUserDataFailedState(error: response.message ?? 'Data fetch failed'));
         }

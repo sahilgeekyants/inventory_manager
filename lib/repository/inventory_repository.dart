@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:inventory_manager/serializers/login_user.dart';
-import 'package:inventory_manager/serializers/product_info.dart';
+import 'package:inventory_manager/serializers/products_list.dart';
 import 'package:inventory_manager/serializers/response.dart';
 import 'package:inventory_manager/serializers/response_body.dart';
 import 'package:inventory_manager/services/api_service/index.dart';
@@ -12,6 +12,7 @@ import 'package:inventory_manager/services/config/config.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/utils/constants/api_request_types.dart';
 import 'package:inventory_manager/utils/constants/messages.dart';
+import 'package:inventory_manager/services/helpers/extensions.dart';
 
 import '../utils/constants/user_roles.dart';
 
@@ -43,7 +44,14 @@ class InventoryRepository {
       if (response.status!) {
         // If the call to the server was successful
         Map<String, dynamic> parsedJson = response.body!.data;
-        if (parsedJson.isNotEmpty) {
+        if (parsedJson.isNotEmpty && parsedJson.keys.contains("ERROR_MESG")) {
+          //Wrong username/password
+          return Response(
+            status: false,
+            body: null,
+            message: parsedJson["ERROR_MESG"],
+          );
+        } else if (parsedJson.isNotEmpty && parsedJson.keys.contains("ssUsername")) {
           //
           LoginUser loginUser = LoginUser.fromJson(parsedJson);
           //save in sharedPref here
@@ -151,11 +159,13 @@ class InventoryRepository {
   Future<Response> getTableData({
     required String userName,
     required String orgId,
-    // required UserRole forRole,
+    required UserRole forRole,
   }) async {
+    String apiReqId =
+        (forRole == UserRole.SURVEYOR_QC) ? "A187EF915A7440A4A367838D1FE4DA3E" : "DACBAAC998424EECB1AF76D4FC342CEF";
     String url = "$_baseUrl/getApiRequestResultsData";
     Map<String, dynamic> body = {
-      "apiReqId": "DACBAAC998424EECB1AF76D4FC342CEF",
+      "apiReqId": apiReqId,
       "apiReqCols": "",
       "apiReqWhereClause": "",
       "apiReqOrgnId": orgId,
@@ -168,21 +178,43 @@ class InventoryRepository {
     try {
       Response response = await HttpService.httpRequests(url, ApiRequestType.POST, body: jsonEncode(body));
       if (kDebugMode) {
-        print('login responseStatus : ${response.responseStatus}');
+        print('getTableData responseStatus : ${response.responseStatus}');
       }
+      //sample empty api response -
+      //{"Message":"Api ID Not available, Please contact provider","apiReqId":"DACBAAC998424EECB1AF76D4FC342CE","apiReqCols":"","apiDataArray":[],"apiReqOrgnId":"C1F5CFB03F2E444DAE78ECCEAD80D27D"}
       if (response.status!) {
         // If the call to the server was successful
         Map<String, dynamic> parsedJson = response.body!.data;
         if (parsedJson.isNotEmpty) {
-          //
-          ProductInfo productInfo = ProductInfo.fromJson(parsedJson);
-          // //save in sharedPref here
-          // localStorage.setAuthenticationInfo(userDetails: loginUser);
-          return Response(
-            status: true,
-            body: ResponseBody(data: productInfo, meta: response.body!.meta),
-            message: ToastMessages.succesMessage["success"],
-          );
+          String? apiReqCols = parsedJson["apiReqCols"] as String?;
+          List<dynamic> apiDataArray = parsedJson["apiDataArray"] as List<dynamic>;
+          if (apiReqCols.isNotNullOrEmpty) {
+            if (apiDataArray.isNotNullOrEmpty) {
+              ProductsList productsList = ProductsList.fromJson(apiDataArray);
+              // //save in sharedPref here
+              // localStorage.setAuthenticationInfo(userDetails: loginUser);
+              return Response(
+                status: true,
+                body: ResponseBody(data: productsList, meta: response.body!.meta),
+                message: ToastMessages.succesMessage["success"],
+              );
+            } else {
+              //getting empty data from api
+              return Response(
+                status: true,
+                body: ResponseBody(data: [], meta: response.body!.meta),
+                message: ToastMessages.errorMessage["emptyData"],
+              );
+            }
+          } else {
+            //did not get the req data from api
+            String? errorMsg = parsedJson["Message"] as String?;
+            return Response(
+              status: false,
+              body: null,
+              message: errorMsg ?? ToastMessages.errorMessage["emptyData"],
+            );
+          }
         } else {
           //Empty response
           return Response(

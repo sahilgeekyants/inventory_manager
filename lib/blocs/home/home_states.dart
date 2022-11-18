@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:inventory_manager/serializers/product_info.dart';
+import 'package:inventory_manager/serializers/products_list.dart';
 
 abstract class HomeState extends Equatable {
   const HomeState();
@@ -24,12 +24,21 @@ class GetUserDataInitialState extends HomeState {
 }
 
 class GetUserDataSuccessState extends HomeState {
-  final List<ProductInfo> productslist;
+  final ProductsList productslist;
 
   const GetUserDataSuccessState({required this.productslist});
 
   @override
   List<Object> get props => [productslist];
+}
+
+class GetUserDataEmptyState extends HomeState {
+  final String response;
+
+  const GetUserDataEmptyState({required this.response});
+
+  @override
+  List<Object> get props => [response];
 }
 
 class GetUserDataFailedState extends HomeState {

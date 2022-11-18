@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 Pattern emailValidationPattern =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
@@ -82,4 +84,41 @@ extension ValidEmailStringValidation on String? {
   bool hasValidEmail() {
     return isNotNullAndNotEmpty() && RegExp(emailValidationPattern as String).hasMatch(this ?? '');
   }
+}
+
+extension NullValidation on dynamic {
+  bool isNotNull() {
+    return this != null;
+  }
+}
+
+extension SwapList on List<dynamic> {
+  List<T?> swap<T>(int index1, int index2) {
+    T? temp = this[index1];
+    this[index1] = this[index2];
+    this[index2] = temp;
+    return this as List<T?>;
+  }
+}
+
+extension IterableX on Iterable? {
+  bool get isNullOrEmpty {
+    if (this == null) {
+      return true;
+    } else {
+      return this!.isEmpty;
+    }
+  }
+
+  bool get isNotNullOrEmpty => !isNullOrEmpty;
+}
+
+extension ListEmptyValidation<E> on Iterable<E>? {
+  bool hasData() => this != null && this!.isNotEmpty;
+}
+
+extension MapX<K, V> on Map<K, V> {
+  T? get<T>(K key) => this[key] as T?;
+
+  String jsonEncode() => json.encode(this);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_manager/blocs/home/home_bloc.dart';
+import 'package:inventory_manager/blocs/home/home_events.dart';
 import 'package:inventory_manager/blocs/home/home_states.dart';
 import 'package:inventory_manager/blocs/login/login_bloc.dart';
 import 'package:inventory_manager/blocs/login/login_events.dart';
@@ -11,6 +12,7 @@ import 'package:inventory_manager/models/bloc_models.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
+import 'package:inventory_manager/serializers/product_info.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
@@ -43,6 +45,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _loginBloc = widget.homePageBlocModel.loginBloc;
     _homeBloc = widget.homePageBlocModel.homeBloc;
+    //added event here for homeBloc to fetch data
+    _homeBloc.add(const GetUserDataEvent());
   }
 
   Map<String, Map<String, dynamic>> getAllRecords() {
@@ -248,6 +252,26 @@ class _HomePageState extends State<HomePage> {
         listener: (context, HomeState state) {
           if (kDebugMode) {
             print('in Home UI HomeBloc listener - state : $state');
+          }
+          if (state is GetUserDataSuccessState) {
+            var productsData = state.productslist.products;
+            Map<String, dynamic> infoJson;
+            for (var productInfo in productsData!) {
+              infoJson = ProductInfo().toJson(productInfo);
+              if (kDebugMode) {
+                print('product info : ${infoJson.toString()}');
+              }
+            }
+          } else if (state is GetUserDataEmptyState) {
+            String msg = state.response;
+            if (kDebugMode) {
+              print('GetUserDataEmptyState: in Home UI HomeBloc msg : $msg');
+            }
+          } else if (state is GetUserDataFailedState) {
+            String msg = state.error;
+            if (kDebugMode) {
+              print('GetUserDataFailedState: in Home UI HomeBloc msg : $msg');
+            }
           }
         },
         builder: (context, HomeState state) {

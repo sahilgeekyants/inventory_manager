@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_manager/resources/common_assets.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
+import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_column_sort_button.dart';
+import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_shadow.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
+import 'components/custom_table_cell.dart';
 
 class CustomTable extends StatefulWidget {
   final Map<String, Map<String, dynamic>> allRecords;
@@ -35,13 +37,13 @@ class _CustomTableState extends State<CustomTable> {
   }
 
   List<Widget> _buildCells(int count, List<String> data, bool isRecordNo) {
-    return List.generate(
+    return List<Widget>.generate(
       count,
       (index) {
-        return TableCell(
-          data: data,
-          isRecordNo: isRecordNo,
+        return CustomTableCell(
           index: index,
+          isRecordNo: isRecordNo,
+          data: data,
         );
       },
     );
@@ -156,7 +158,7 @@ class _CustomTableState extends State<CustomTable> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "${properties[index]}",
+                                        properties[index],
                                         style: const TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
@@ -183,154 +185,11 @@ class _CustomTableState extends State<CustomTable> {
                   )
                 ],
               ),
-              Positioned(
-                left: -2.toWidth,
-                child: Container(
-                  width: 122.toWidth,
-                  height: ((allRecords.keys.toList().length + 1) * 50).toHeight,
-                  decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: CommonColors.kTableBorderColor,
-                        blurStyle: BlurStyle.outer,
-                        blurRadius: 1,
-                        spreadRadius: 1,
-                        offset: Offset(
-                          0,
-                          0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                height: 575.toHeight,
-              ),
-              Positioned(
-                child: Container(
-                  width: 120.toWidth,
-                  height:
-                      ((allRecords.keys.toList().length + 1) * 50).toHeight -
-                          1.toHeight,
-                  decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: CommonColors.kBlackShadowColor,
-                        blurStyle: BlurStyle.outer,
-                        blurRadius: 20,
-                        spreadRadius: 1,
-                        offset: Offset(
-                          0,
-                          0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ...TableShadow.getTableShadow(allRecords),
             ],
           ),
         ],
       ),
-    );
-  }
-}
-
-class TableColumnSortButton extends StatelessWidget {
-  const TableColumnSortButton({super.key, required this.onPressed});
-  final VoidCallback onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        height: 14.toHeight,
-        child: Column(
-          children: [
-            Expanded(
-              child: Image.asset(CommonAssets.topIndicator),
-            ),
-            SizedBox(
-              height: 0.2.toHeight,
-            ),
-            Expanded(
-              child: Image.asset(CommonAssets.bottomIndicator),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TableCell extends StatelessWidget {
-  final int index;
-  final bool isRecordNo;
-  final List<String> data;
-  const TableCell({
-    Key? key,
-    required this.index,
-    required this.isRecordNo,
-    required this.data,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    print(data);
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: CommonColors.kTableBorderColor,
-            width: 2.toHeight,
-          ),
-          left: isRecordNo
-              ? BorderSide(
-                  color: CommonColors.kTableBorderColor,
-                  width: 2.toHeight,
-                )
-              : const BorderSide(
-                  width: 0,
-                  color: CommonColors.kTransparentColor,
-                ),
-          right: !isRecordNo
-              ? index == data.length - 1
-                  ? BorderSide(
-                      color: CommonColors.kTableBorderColor,
-                      width: 2.toHeight,
-                    )
-                  : const BorderSide(
-                      width: 0,
-                      color: CommonColors.kTransparentColor,
-                    )
-              : const BorderSide(
-                  width: 0,
-                  color: CommonColors.kTransparentColor,
-                ),
-        ),
-        color: CommonColors.kTextWhiteColor,
-      ),
-      alignment: Alignment.center,
-      width: 120.toWidth,
-      height: 50.toHeight,
-      child: index != 2 || isRecordNo
-          ? Text(
-              data[index],
-              style: TextStyle(
-                  fontFamily: CommonFonts.Poppins,
-                  color: CommonColors.kTextColorLight,
-                  fontSize: 12.toFont,
-                  fontWeight: FontWeight.w400),
-            )
-          : DropdownButton(
-              items: const [
-                DropdownMenuItem(
-                  child: Text("Region"),
-                ),
-              ],
-              onChanged: null,
-            ),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_manager/blocs/login/login_bloc.dart';
-import 'package:inventory_manager/blocs/login/login_events.dart';
+import 'package:inventory_manager/blocs/home/home_bloc.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/home_page_header/components/home_profile_menu.dart';
@@ -9,11 +8,10 @@ import 'package:inventory_manager/utils/screen_util.dart';
 class HomePageHeader extends StatelessWidget {
   const HomePageHeader({
     Key? key,
-    required LoginBloc loginBloc,
-  })  : _loginBloc = loginBloc,
+    required HomeBloc homeBloc,
+  })  : _homeBloc = homeBloc,
         super(key: key);
-
-  final LoginBloc _loginBloc;
+  final HomeBloc _homeBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +47,7 @@ class HomePageHeader extends StatelessWidget {
               context: context,
               builder: ((context) {
                 return HomeProfileMenu(
-                  loginBloc: _loginBloc,
+                  homeBloc: _homeBloc,
                 );
               }),
             );

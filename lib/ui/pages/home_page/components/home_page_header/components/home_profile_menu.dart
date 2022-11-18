@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_manager/blocs/login/login_bloc.dart';
-import 'package:inventory_manager/blocs/login/login_events.dart';
+import 'package:inventory_manager/blocs/home/home_bloc.dart';
+import 'package:inventory_manager/blocs/home/home_events.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
@@ -8,10 +8,10 @@ import 'package:inventory_manager/utils/screen_util.dart';
 class HomeProfileMenu extends StatelessWidget {
   const HomeProfileMenu({
     Key? key,
-    required LoginBloc loginBloc,
-  })  : _loginBloc = loginBloc,
+    required HomeBloc homeBloc,
+  })  : _homeBloc = homeBloc,
         super(key: key);
-  final LoginBloc _loginBloc;
+  final HomeBloc _homeBloc;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -122,24 +122,19 @@ class HomeProfileMenu extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                             border: Border(
                                               bottom: BorderSide(
-                                                color: CommonColors
-                                                    .kBorderLightGrey,
+                                                color: CommonColors.kBorderLightGrey,
                                               ),
                                             ),
                                           ),
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Text(
                                                 "Log Out",
                                                 style: TextStyle(
-                                                  fontFamily:
-                                                      CommonFonts.Poppins,
-                                                  color: CommonColors
-                                                      .kBlackIconColor,
+                                                  fontFamily: CommonFonts.Poppins,
+                                                  color: CommonColors.kBlackIconColor,
                                                   fontSize: 17.toFont,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -147,10 +142,8 @@ class HomeProfileMenu extends StatelessWidget {
                                               Text(
                                                 "Log out successful",
                                                 style: TextStyle(
-                                                  fontFamily:
-                                                      CommonFonts.Poppins,
-                                                  color: CommonColors
-                                                      .kBlackIconColor,
+                                                  fontFamily: CommonFonts.Poppins,
+                                                  color: CommonColors.kBlackIconColor,
                                                   fontSize: 14.toFont,
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -168,8 +161,7 @@ class HomeProfileMenu extends StatelessWidget {
                                             child: Text(
                                               "OK",
                                               style: TextStyle(
-                                                color: CommonColors
-                                                    .kSecondaryBLueColor,
+                                                color: CommonColors.kSecondaryBLueColor,
                                                 fontFamily: CommonFonts.Poppins,
                                                 fontSize: 17.toFont,
                                               ),
@@ -181,7 +173,7 @@ class HomeProfileMenu extends StatelessWidget {
                               );
                             }),
                           ).then((value) {
-                            _loginBloc.add(LogOutButtonPressed());
+                            _homeBloc.add(LogOutButtonPressed());
                           });
                         },
                         child: Text(

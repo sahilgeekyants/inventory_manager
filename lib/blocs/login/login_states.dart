@@ -31,28 +31,3 @@ class LoginFailedState extends LoginState {
   @override
   List<Object> get props => [error];
 }
-
-//
-
-class LogoutInitialState extends LoginState {
-  final bool isLoading;
-
-  const LogoutInitialState({required this.isLoading});
-
-  @override
-  List<Object> get props => [isLoading];
-}
-
-class LogoutSuccessState extends LoginState {
-  @override
-  List<Object> get props => [];
-}
-
-class LogoutFailedState extends LoginState {
-  final String error;
-
-  const LogoutFailedState({required this.error});
-
-  @override
-  List<Object> get props => [error];
-}

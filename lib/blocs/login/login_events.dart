@@ -15,10 +15,6 @@ class LoginButtonPressed extends LoginEvent {
   List<Object> get props => [userName, password];
 }
 
-class LogOutButtonPressed extends LoginEvent {
-  @override
-  List<Object> get props => [];
-}
 
 // class LoginPageLoading extends LoginEvent {
 //   final bool isLoading;

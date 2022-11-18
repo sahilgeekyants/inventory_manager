@@ -31,22 +31,16 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
       bool iswalkThroughComplete = await localStorage.getIsWalkThroughComplete();
       if (!iswalkThroughComplete) {
         await localStorage.setIsWalkThroughComplete(status: true);
-        if (kDebugMode) {
-          print('goto login now after splash');
-        }
+        if (kDebugMode) print('goto login now after splash');
         //go to login
         navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
       } else {
-        if (kDebugMode) {
-          print('goto home directly because already logged in');
-        }
+        if (kDebugMode) print('goto home directly because already logged in');
         //already loged in, go to home
         navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
       }
     } catch (err) {
-      if (kDebugMode) {
-        print("err is $err");
-      }
+      if (kDebugMode) print("err is $err");
     }
   }
 

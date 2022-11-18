@@ -69,19 +69,13 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocConsumer<LoginBloc, LoginState>(
           bloc: _loginBloc,
           listener: (context, LoginState state) {
-            if (kDebugMode) {
-              print('in UI listener - state : $state');
-            }
+            if (kDebugMode) print('in UI listener - state : $state');
             if (state is LoginSuccessState) {
-              if (kDebugMode) {
-                print('in UI listener succcess - state : LoginSuccessState');
-              }
+              if (kDebugMode) print('in UI listener succcess - state : LoginSuccessState');
               //go to homePage
               navigatorKey.currentState!.pushReplacementNamed(Routes.homePath);
             } else if (state is LoginFailedState) {
-              if (kDebugMode) {
-                print('in UI listener failed - state : LoginFailedState');
-              }
+              if (kDebugMode) print('in UI listener failed - state : LoginFailedState');
               LoginFailedState failState = state;
               //show error message
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -96,9 +90,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           builder: (context, LoginState state) {
             if (state is LoginInitialState && state.isLoading == true) {
-              if (kDebugMode) {
-                print('in UI builder loading - state : $state');
-              }
+              if (kDebugMode) print('in UI builder loading - state : $state');
               return const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.blue,
@@ -168,9 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                     focusNode: userNameFocusNode,
                     keyboardType: TextInputType.text,
                     onChanged: (String val) {
-                      if (kDebugMode) {
-                        print('username changed val : $val');
-                      }
+                      if (kDebugMode) print('username changed val : $val');
                     },
                     onSubmitted: (String val) {
                       userNameVal = val;
@@ -222,9 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     onChanged: (String val) {
-                      if (kDebugMode) {
-                        print('password changed val : $val');
-                      }
+                      if (kDebugMode) print('password changed val : $val');
                     },
                     onSubmitted: (String val) {
                       passwordVal = val;

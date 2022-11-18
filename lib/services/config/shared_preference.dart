@@ -6,9 +6,7 @@ class MyLocalStorage {
   static late SharedPreferences _prefs;
 
   static Future setLocalStorage() async {
-    if (kDebugMode) {
-      print("initialising the shared preference");
-    }
+    if (kDebugMode) print("initialising the shared preference");
     _prefs = await SharedPreferences.getInstance();
   }
 

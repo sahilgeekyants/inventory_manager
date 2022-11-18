@@ -10,7 +10,6 @@ import 'login_states.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({required this.repository}) : super(const LoginInitialState(isLoading: false)) {
     on<LoginButtonPressed>(mapLogInUserToState);
-    on<LogOutButtonPressed>(mapLogOutUserToState);
   }
   final InventoryRepository repository;
 
@@ -22,9 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(const LoginInitialState(isLoading: true));
     Response response;
     try {
-      if (kDebugMode) {
-        print('login function calling in bloc');
-      }
+      if (kDebugMode) print('login function calling in bloc');
       response = await repository.userLogin(userName: event.userName, password: event.password);
       if (kDebugMode) {
         print('login function returned resoponse : ${response.body?.data ?? ''}');
@@ -37,38 +34,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginFailedState(error: response.message ?? 'Login failed'));
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      if (kDebugMode) print(e);
       emit(LoginFailedState(error: e.toString()));
-    }
-  }
-
-  Future<void> mapLogOutUserToState(
-    LogOutButtonPressed event,
-    Emitter<LoginState> emit,
-  ) async {
-    emit(const LogoutInitialState(isLoading: true));
-    Response response;
-    try {
-      if (kDebugMode) {
-        print('logout function calling in bloc');
-      }
-      response = await repository.userLogOut();
-      if (kDebugMode) {
-        print('logout function returned resoponse : ${response.body?.data ?? ''}');
-        print('logout function returned status : ${response.status}');
-      }
-      if (response.status!) {
-        emit(LogoutSuccessState());
-      } else {
-        emit(LogoutFailedState(error: response.message ?? 'Login failed'));
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      emit(LogoutFailedState(error: e.toString()));
     }
   }
 }

@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_manager/blocs/home/home_bloc.dart';
 import 'package:inventory_manager/blocs/home/home_events.dart';
 import 'package:inventory_manager/blocs/home/home_states.dart';
-import 'package:inventory_manager/blocs/login/login_bloc.dart';
-import 'package:inventory_manager/blocs/login/login_states.dart';
 import 'package:inventory_manager/main.dart';
 import 'package:inventory_manager/models/bloc_models.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
@@ -18,6 +16,7 @@ import 'package:inventory_manager/ui/pages/home_page/components/home_page_header
 import 'package:inventory_manager/ui/pages/home_page/components/table/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/home_page_dummy_data.dart';
 import 'package:inventory_manager/utils/constants/product_fields_data.dart';
+import 'package:inventory_manager/utils/constants/user_roles.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,7 +31,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late LoginBloc _loginBloc;
   late HomeBloc _homeBloc;
   // Map<String, Map<String, dynamic>> allRecords =
   late String initialRecordNumber;
@@ -46,18 +44,17 @@ class _HomePageState extends State<HomePage> {
       return true;
     });
     super.initState();
-    _loginBloc = widget.homePageBlocModel.loginBloc;
     _homeBloc = widget.homePageBlocModel.homeBloc;
     //added event here for homeBloc to fetch data
     _homeBloc.add(const GetUserDataEvent());
   }
 
-  openDrawer(BuildContext _context) {
+  openDrawer(BuildContext context) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      context: _context,
-      builder: (BuildContext _context) {
+      context: context,
+      builder: (BuildContext context) {
         return BottomModalWidget(
           context: context,
           properties: properties,
@@ -71,6 +68,17 @@ class _HomePageState extends State<HomePage> {
         }
       });
     });
+  }
+
+  showErrorSnackBar(BuildContext context, String errMsg) {
+    //show error message
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('$errMsg, Please try again'),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+    ));
   }
 
   Map<String, Map<String, dynamic>> getFilteredArray() {
@@ -90,110 +98,78 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      bloc: _loginBloc,
-      listener: (context, LoginState state) async {
-        if (kDebugMode) {
-          print('in HOme UI LoginBloc listener - state : $state');
-        }
-        if (state is LogoutSuccessState) {
-          if (kDebugMode) {
-            print('in UI listener succcess - state : LogoutSuccessState');
-          }
-          //remove all data of user from app
-          await localStorage.setIsWalkThroughComplete(status: false);
-          //go to loginPage
-          navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
-        } else if (state is LogoutFailedState) {
-          if (kDebugMode) {
-            print('in UI listener failed - state : LogoutFailedState');
-          }
-          LogoutFailedState failState = state;
-          //show error message
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${failState.error}, Please try again'),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ));
-        }
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10.toWidth,
-            ),
-            child: BlocConsumer<HomeBloc, HomeState>(
-              bloc: _homeBloc,
-              listener: (context, HomeState state) {
-                if (kDebugMode) {
-                  print('in Home UI HomeBloc listener - state : $state');
-                }
-                if (state is GetUserDataSuccessState) {
-                  var productsData = state.productslist.products;
-                  Map<String, dynamic> infoJson;
-                  for (var productInfo in productsData!) {
-                    infoJson = ProductInfo().toJson(productInfo);
-                    int productSrNo = 0;
-                    if (kDebugMode) {
-                      print('product SrNo- $productSrNo : }');
-                      print('product data  ${infoJson.toString()}');
-                    }
-                    infoJson.forEach((fieldKey, fieldValue) {
-                      productSrNo++;
-                      List<String> fieldData = ProductFieldsData.getRecordFieldData(fieldKey);
-                      String fieldLable = fieldData[0];
-                      String fieldType = fieldData[1];
-                      bool isFieldTypeDropDown = ProductFieldsData.isFieldTypeDropDown(fieldType);
-                      if (kDebugMode) {
-                        // print('product data  ${infoJson.toString()}');
-                      }
-                    });
-                  }
-                } else if (state is GetUserDataEmptyState) {
-                  String msg = state.response;
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.toWidth,
+          ),
+          child: BlocConsumer<HomeBloc, HomeState>(
+            bloc: _homeBloc,
+            listener: (context, HomeState state) async {
+              if (kDebugMode) print('in Home UI HomeBloc listener - state : $state');
+              if (state is LogoutFailedState || state is GetUserDataFailedState) {
+                String errMsg = (state is LogoutFailedState) ? state.error : (state as GetUserDataFailedState).error;
+                showErrorSnackBar(context, errMsg);
+              } else if (state is LogoutSuccessState) {
+                //remove all data of user from app
+                await localStorage.setIsWalkThroughComplete(status: false);
+                //go to loginPage
+                navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
+              } else if (state is GetUserDataEmptyState) {
+                String msg = state.response;
+                showErrorSnackBar(context, msg);
+                if (kDebugMode) print('GetUserDataEmptyState: in Home UI HomeBloc msg : $msg');
+              }
+            },
+            builder: (context, HomeState state) {
+              if (state is GetUserDataInitialState || state is LogoutInitialState) {
+                if (kDebugMode) print('in Home UI builder loading - state : $state');
+                return const Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.blue,
+                  ),
+                );
+              } else if (state is GetUserDataFailedState ||
+                  state is LogoutFailedState ||
+                  state is GetUserDataEmptyState) {
+                String stateResponse = (state is GetUserDataEmptyState) ? state.response : 'Something Went Wrong';
+                return Center(
+                    child: Text(
+                  stateResponse,
+                  style: TextStyle(
+                    fontSize: 16.toFont,
+                    fontWeight: FontWeight.w600,
+                    color: CommonColors.kPrimaryBlueColor,
+                  ),
+                ));
+              } else if (state is GetUserDataSuccessState) {
+                var productsData = state.productslist.products;
+                Map<String, dynamic> infoJson;
+                for (var productInfo in productsData!) {
+                  infoJson = ProductInfo().toJson(productInfo);
+                  int productSrNo = 0;
                   if (kDebugMode) {
-                    print('GetUserDataEmptyState: in Home UI HomeBloc msg : $msg');
+                    print('product SrNo- $productSrNo --->');
+                    print('product data  ${infoJson.toString()}');
                   }
-                } else if (state is GetUserDataFailedState) {
-                  String msg = state.error;
-                  if (kDebugMode) {
-                    print('GetUserDataFailedState: in Home UI HomeBloc msg : $msg');
-                  }
+                  infoJson.forEach((fieldKey, fieldValue) {
+                    productSrNo++;
+                    List<String> fieldData = ProductFieldsData.getRecordFieldData(fieldKey);
+                    String fieldLable = fieldData[0];
+                    String fieldType = fieldData[1];
+                    bool isFieldTypeDropDown = ProductFieldsData.isFieldTypeDropDown(fieldType);
+                    // if (kDebugMode) print('product data  ${infoJson.toString()}');
+                  });
                 }
-              },
-              builder: (context, HomeState state) {
-                // if (state is GetUserDataInitialState) {
-                //   if (kDebugMode) {
-                //     print('in Home UI builder loading - state : $state');
-                //   }
-                //   return const Center(
-                //     child: CircularProgressIndicator(
-                //       backgroundColor: Colors.blue,
-                //     ),
-                //   );
-                // } else if (state is GetUserDataSuccessState) {
-                //   var productsData = state.productslist.products;
-                //   Map<String, dynamic> infoJson;
-                //   for (var productInfo in productsData!) {
-                //     infoJson = ProductInfo().toJson(productInfo);
-                //     if (kDebugMode) {
-                //       print('product info : ${infoJson.toString()}');
-                //     }
-                //   }
-                //   //
-                // } else if (state is GetUserDataEmptyState) {
-                //   //
-                // } else if (state is GetUserDataFailedState) {
-                //   //
-                // }
+
+                UserRole userRole = state.userRole;
+                String userLabel = (userRole == UserRole.SURVEYOR_QC) ? 'Data Surveyor QC' : 'Data Surveyor';
                 return Column(
                   children: [
                     SizedBox(
                       height: 50.toHeight,
-                      child: HomePageHeader(loginBloc: _loginBloc),
+                      child: HomePageHeader(homeBloc: _homeBloc),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -208,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Data Surveyor",
+                                  userLabel,
                                   style: TextStyle(
                                     color: CommonColors.kBlackIconColor,
                                     fontFamily: CommonFonts.Poppins,
@@ -258,8 +234,13 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 );
-              },
-            ),
+              }
+              return const Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.blue,
+                ),
+              );
+            },
           ),
         ),
       ),

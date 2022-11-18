@@ -14,6 +14,7 @@ import 'home_states.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({required this.repository}) : super(const HomeInitialState(isLoading: false)) {
     on<GetUserDataEvent>(_handleGetUserDataEvent);
+    on<LogOutButtonPressed>(mapLogOutUserToState);
   }
   final InventoryRepository repository;
   // List<ProductInfo> productslist = [];
@@ -31,9 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       String? orgId = await localStorage.getUserOrgId();
       bool isRoleQC = await isUserRoleQC();
       if (userName.isNotNullOrEmpty && orgId.isNotNullOrEmpty) {
-        if (kDebugMode) {
-          print('getTableData function calling in bloc');
-        }
+        if (kDebugMode) print('getTableData function calling in bloc');
         response = await repository.getTableData(
           userName: userName!,
           orgId: orgId!,
@@ -47,7 +46,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           if (response.body!.data is ProductsList) {
             productsList = response.body!.data;
             // productslist = response.body!.data;
-            emit(GetUserDataSuccessState(productslist: productsList!));
+            emit(GetUserDataSuccessState(
+              productslist: productsList!,
+              userRole: isRoleQC ? UserRole.SURVEYOR_QC : UserRole.SURVEYOR,
+            ));
           } else if (response.body!.data is List) {
             //empty data state
             emit(const GetUserDataEmptyState(response: 'User don\'t have any data'));
@@ -59,10 +61,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(const UserInfoUnavailableLoginAgainState(error: 'User info Unavailable'));
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      if (kDebugMode) print(e);
       emit(GetUserDataFailedState(error: e.toString()));
+    }
+  }
+
+  //
+
+  Future<void> mapLogOutUserToState(
+    LogOutButtonPressed event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(const LogoutInitialState(isLoading: true));
+    Response response;
+    try {
+      if (kDebugMode) print('logout function calling in bloc');
+      response = await repository.userLogOut();
+      if (kDebugMode) {
+        print('logout function returned resoponse : ${response.body?.data ?? ''}');
+        print('logout function returned status : ${response.status}');
+      }
+      if (response.status!) {
+        emit(LogoutSuccessState());
+      } else {
+        emit(LogoutFailedState(error: response.message ?? 'Login failed'));
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+      emit(LogoutFailedState(error: e.toString()));
     }
   }
 }

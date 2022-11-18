@@ -32,15 +32,11 @@ class InventoryRepository {
       "rsURL": _baseUrl,
       "language": _language
     };
-    if (kDebugMode) {
-      print("url : $url");
-    }
+    if (kDebugMode) print("url : $url");
     // Response response;
     try {
       Response response = await HttpService.httpRequests(url, ApiRequestType.POST, body: jsonEncode(body));
-      if (kDebugMode) {
-        print('login responseStatus : ${response.responseStatus}');
-      }
+      if (kDebugMode) print('login responseStatus : ${response.responseStatus}');
       if (response.status!) {
         // If the call to the server was successful
         Map<String, dynamic> parsedJson = response.body!.data;
@@ -75,9 +71,7 @@ class InventoryRepository {
       }
     } on Exception catch (e) {
       String errMsg = e.toString();
-      if (kDebugMode) {
-        print('exception inside login api call : $errMsg}');
-      }
+      if (kDebugMode) print('exception inside login api call : $errMsg}');
       if (errMsg.contains(ToastMessages.errorMessage[""]!)) {
         //
       }
@@ -93,9 +87,7 @@ class InventoryRepository {
       Map<String, dynamic> body = {
         "rsUsername": userName,
       };
-      if (kDebugMode) {
-        print("url : $url");
-      }
+      if (kDebugMode) print("url : $url");
       // Response response;
       try {
         Response response = await HttpService.httpRequests(url, ApiRequestType.POST, body: jsonEncode(body));
@@ -111,9 +103,7 @@ class InventoryRepository {
         //so using response status to check success
         // if (response.responseStatus! == 200 && response.body is String && response.body == 'Success') {
         if (response.responseStatus! == 200) {
-          if (kDebugMode) {
-            print("logout success status in repository with 200 status");
-          }
+          if (kDebugMode) print("logout success status in repository with 200 status");
           // If the call to the server was successful
           //save in sharedPref here
           localStorage.clearUserAndToken();
@@ -124,26 +114,20 @@ class InventoryRepository {
             message: ToastMessages.succesMessage["success"],
           );
         } else {
-          if (kDebugMode) {
-            print("logout failed status in repository");
-          }
+          if (kDebugMode) print("logout failed status in repository");
           // If that call was not successful, then return the error response
           return response;
         }
       } on Exception catch (e) {
         String errMsg = e.toString();
-        if (kDebugMode) {
-          print('exception inside login api call : $errMsg}');
-        }
+        if (kDebugMode) print('exception inside login api call : $errMsg}');
         if (errMsg.contains(ToastMessages.errorMessage[""]!)) {
           //
         }
         return Response(status: false, body: null, message: e.toString());
       }
     } else {
-      if (kDebugMode) {
-        print('username is not present in local storage, so logout user');
-      }
+      if (kDebugMode) print('username is not present in local storage, so logout user');
       //username is not present in local storage
       //give logout success state
       localStorage.clearUserAndToken();
@@ -172,14 +156,10 @@ class InventoryRepository {
       "apiReqUserId": userName,
       "apiRetType": "JSON",
     };
-    if (kDebugMode) {
-      print("url : $url");
-    }
+    if (kDebugMode) print("url : $url");
     try {
       Response response = await HttpService.httpRequests(url, ApiRequestType.POST, body: jsonEncode(body));
-      if (kDebugMode) {
-        print('getTableData responseStatus : ${response.responseStatus}');
-      }
+      if (kDebugMode) print('getTableData responseStatus : ${response.responseStatus}');
       //sample empty api response -
       //{"Message":"Api ID Not available, Please contact provider","apiReqId":"DACBAAC998424EECB1AF76D4FC342CE","apiReqCols":"","apiDataArray":[],"apiReqOrgnId":"C1F5CFB03F2E444DAE78ECCEAD80D27D"}
       if (response.status!) {
@@ -229,9 +209,7 @@ class InventoryRepository {
       }
     } on Exception catch (e) {
       String errMsg = e.toString();
-      if (kDebugMode) {
-        print('exception inside login api call : $errMsg}');
-      }
+      if (kDebugMode) print('exception inside login api call : $errMsg}');
       if (errMsg.contains(ToastMessages.errorMessage[""]!)) {
         //
       }

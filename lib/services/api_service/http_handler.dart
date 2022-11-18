@@ -18,16 +18,12 @@ class HttpServiceHelper {
     try {
       switch (requestType) {
         case ApiRequestType.GET:
-          if (kDebugMode) {
-            print("url is GET ------------------------------- $url");
-          }
+          if (kDebugMode) print("url is GET ------------------------------- $url");
           response = await http.get(Uri.parse(url), headers: headers);
           break;
 
         case ApiRequestType.POST:
-          if (kDebugMode) {
-            print("url is POST ------------------------------- $url");
-          }
+          if (kDebugMode) print("url is POST ------------------------------- $url");
           response = await http.post(Uri.parse(url), headers: headers, body: body, encoding: encoding);
           break;
         case ApiRequestType.PUT:
@@ -58,7 +54,7 @@ class HttpServiceHelper {
           throw "No method type match";
       }
     } catch (exception) {
-      print("error ocuured --->> $exception");
+      if (kDebugMode) print("error ocuured --->> $exception");
       if (exception.runtimeType == SocketException) {
         return _HttpServiceHelper._errorResponse(response, url, headers, body.toString(),
             errorMessage: "No Internet, Please Try again later");
@@ -93,9 +89,7 @@ class _HttpServiceHelper {
       // }
       return _errorResponse(response, url, headers, body, errorMessage: "session is expired");
     } else if (_statusCode >= 400 && _statusCode != 401) {
-      if (kDebugMode) {
-        print("inside >= 400 of url --> $url and body is ${response.body}");
-      }
+      if (kDebugMode) print("inside >= 400 of url --> $url and body is ${response.body}");
       return resolveResponse(response);
     } else if (_statusCode >= 200 && _statusCode < 300) {
       return resolveResponse(response);
@@ -118,9 +112,7 @@ class _HttpServiceHelper {
         'response_status': apiResponse.statusCode
       });
     } catch (e) {
-      if (kDebugMode) {
-        print("error occured in resolving response with $e");
-      }
+      if (kDebugMode) print("error occured in resolving response with $e");
       return _errorResponse(apiResponse, "", {}, "", errorMessage: "Unable to decode body");
     }
   }

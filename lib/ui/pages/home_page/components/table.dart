@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_manager/resources/common_assets.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
@@ -25,77 +23,28 @@ class _CustomTableState extends State<CustomTable> {
     allRecords = widget.allRecords;
     initialRecordNumber = allRecords.keys.toList()[0];
     properties = allRecords[initialRecordNumber]!.keys.toList();
-    print(properties);
-    // print(allRecords);
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant CustomTable oldWidget) {
-    print("Inside didupdate");
     allRecords = widget.allRecords;
     initialRecordNumber = allRecords.keys.toList()[0];
     properties = allRecords[initialRecordNumber]!.keys.toList();
-    print(properties);
     super.didUpdateWidget(oldWidget);
   }
 
-  Widget sortButton() {
-    return GestureDetector(
-      onTap: () {
-        //Code for what happens on click of sort button
-      },
-      child: Container(
-        height: 14.toHeight,
-        child: Column(
-          children: [
-            Expanded(
-              child: Image.asset(CommonAssets.topIndicator),
-            ),
-            SizedBox(
-              height: 0.2.toHeight,
-            ),
-            Expanded(
-              child: Image.asset(CommonAssets.bottomIndicator),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   List<Widget> _buildCells(int count, List<String> data, bool isRecordNo) {
-    return List.generate(count, (index) {
-      return Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: CommonColors.kTableBorderColor,
-            ),
-          ),
-          color: CommonColors.kTextWhiteColor,
-        ),
-        alignment: Alignment.center,
-        width: 120.toWidth,
-        height: 50.toHeight,
-        child: index != 2 || isRecordNo
-            ? Text(
-                data[index],
-                style: const TextStyle(
-                  fontFamily: CommonFonts.Poppins,
-                  color: CommonColors.kTextColorLight,
-                ),
-              )
-            : DropdownButton(
-                items: const [
-                  DropdownMenuItem(
-                    child: Text("Region"),
-                  ),
-                ],
-                onChanged: null,
-              ),
-      );
-    });
+    return List.generate(
+      count,
+      (index) {
+        return TableCell(
+          data: data,
+          isRecordNo: isRecordNo,
+          index: index,
+        );
+      },
+    );
   }
 
   List<Widget> _buildRows(int count) {
@@ -104,18 +53,19 @@ class _CustomTableState extends State<CustomTable> {
       (index) => Row(
         children: [
           ..._buildCells(
+            properties.length,
+            List.generate(
               properties.length,
-              List.generate(
-                properties.length,
-                (index2) {
-                  if (properties[index2].toLowerCase() == "region") {
-                    return "Region";
-                  }
-                  return allRecords[allRecords.keys.toList()[index]]![
-                      properties[index2]];
-                },
-              ),
-              false)
+              (index2) {
+                if (properties[index2].toLowerCase() == "region") {
+                  return "Region";
+                }
+                return allRecords[allRecords.keys.toList()[index]]![
+                    properties[index2]];
+              },
+            ),
+            false,
+          )
         ],
       ),
     );
@@ -164,7 +114,9 @@ class _CustomTableState extends State<CustomTable> {
                                       SizedBox(
                                         width: 10.toWidth,
                                       ),
-                                      sortButton(),
+                                      TableColumnSortButton(
+                                        onPressed: () {},
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -213,7 +165,9 @@ class _CustomTableState extends State<CustomTable> {
                                       SizedBox(
                                         width: 10.toWidth,
                                       ),
-                                      sortButton(),
+                                      TableColumnSortButton(
+                                        onPressed: () {},
+                                      ),
                                     ],
                                   ),
                                 );
@@ -230,9 +184,10 @@ class _CustomTableState extends State<CustomTable> {
                 ],
               ),
               Positioned(
+                left: -2.toWidth,
                 child: Container(
-                  width: 120.toWidth,
-                  height: ((allRecords.keys.toList().length - 1) * 50).toHeight,
+                  width: 122.toWidth,
+                  height: ((allRecords.keys.toList().length + 1) * 50).toHeight,
                   decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -249,6 +204,9 @@ class _CustomTableState extends State<CustomTable> {
                   ),
                 ),
               ),
+              Container(
+                height: 575.toHeight,
+              ),
               Positioned(
                 child: Container(
                   width: 120.toWidth,
@@ -260,7 +218,7 @@ class _CustomTableState extends State<CustomTable> {
                       BoxShadow(
                         color: CommonColors.kBlackShadowColor,
                         blurStyle: BlurStyle.outer,
-                        blurRadius: 10,
+                        blurRadius: 20,
                         spreadRadius: 1,
                         offset: Offset(
                           0,
@@ -275,6 +233,104 @@ class _CustomTableState extends State<CustomTable> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TableColumnSortButton extends StatelessWidget {
+  const TableColumnSortButton({super.key, required this.onPressed});
+  final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        height: 14.toHeight,
+        child: Column(
+          children: [
+            Expanded(
+              child: Image.asset(CommonAssets.topIndicator),
+            ),
+            SizedBox(
+              height: 0.2.toHeight,
+            ),
+            Expanded(
+              child: Image.asset(CommonAssets.bottomIndicator),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TableCell extends StatelessWidget {
+  final int index;
+  final bool isRecordNo;
+  final List<String> data;
+  const TableCell({
+    Key? key,
+    required this.index,
+    required this.isRecordNo,
+    required this.data,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print(data);
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: CommonColors.kTableBorderColor,
+            width: 2.toHeight,
+          ),
+          left: isRecordNo
+              ? BorderSide(
+                  color: CommonColors.kTableBorderColor,
+                  width: 2.toHeight,
+                )
+              : const BorderSide(
+                  width: 0,
+                  color: CommonColors.kTransparentColor,
+                ),
+          right: !isRecordNo
+              ? index == data.length - 1
+                  ? BorderSide(
+                      color: CommonColors.kTableBorderColor,
+                      width: 2.toHeight,
+                    )
+                  : const BorderSide(
+                      width: 0,
+                      color: CommonColors.kTransparentColor,
+                    )
+              : const BorderSide(
+                  width: 0,
+                  color: CommonColors.kTransparentColor,
+                ),
+        ),
+        color: CommonColors.kTextWhiteColor,
+      ),
+      alignment: Alignment.center,
+      width: 120.toWidth,
+      height: 50.toHeight,
+      child: index != 2 || isRecordNo
+          ? Text(
+              data[index],
+              style: TextStyle(
+                  fontFamily: CommonFonts.Poppins,
+                  color: CommonColors.kTextColorLight,
+                  fontSize: 12.toFont,
+                  fontWeight: FontWeight.w400),
+            )
+          : DropdownButton(
+              items: const [
+                DropdownMenuItem(
+                  child: Text("Region"),
+                ),
+              ],
+              onChanged: null,
+            ),
     );
   }
 }

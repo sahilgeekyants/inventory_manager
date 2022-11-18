@@ -8,10 +8,10 @@ class ProductFieldsData {
   }
 
   static List<String> getRecordFieldData(String fieldName) {
-    return _productAllFieldsData[fieldName];
+    return _productAllFieldsData[fieldName]!;
   }
 
-  static const Map _productAllFieldsData = {
+  static const Map<String, List<String>> _productAllFieldsData = {
     "RECORD_NO": [
       "Record No",
       "DISP_ONLY",

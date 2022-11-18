@@ -20,3 +20,13 @@ class HomePageBlocModel {
     this.homeBloc,
   );
 }
+
+class AllBlocModel {
+  final LoginBloc loginBloc;
+  final HomeBloc homeBloc;
+
+  AllBlocModel(
+    this.loginBloc,
+    this.homeBloc,
+  );
+}

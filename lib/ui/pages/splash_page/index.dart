@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   String welcomeText = 'Welcome to Pilog';
 
   startTime() async {
-    var duration = const Duration(seconds: 2);
+    var duration = const Duration(seconds: 3);
     // await appSetUp();
     return Timer(duration, isAuthentication);
   }
@@ -48,6 +48,12 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
         print("err is $err");
       }
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

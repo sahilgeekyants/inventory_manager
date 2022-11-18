@@ -9,6 +9,7 @@ class BlocProvider {
   late bool forceCreateNewInstance;
   LoginPageBlocModel? _loginPageBlocModel;
   HomePageBlocModel? _homePageBlocModel;
+  AllBlocModel? _allBlocModel;
 
   static final BlocProvider _singleton = BlocProvider._internal();
 
@@ -31,11 +32,14 @@ class BlocProvider {
   //
   LoginBloc? _loginBloc;
   HomeBloc? _homeBloc;
-  dynamic getBlocModel() {
+  dynamic getBlocModel({bool getAllBlocModel = false}) {
     _loginBloc ??= LoginBloc(repository: _getAppRepository());
     _homeBloc ??= HomeBloc(repository: _getAppRepository());
 
-    if (pageIntent == EnumPageIntent.Login) {
+    if (getAllBlocModel) {
+      return _allBlocModel =
+          (forceCreateNewInstance || _allBlocModel == null) ? AllBlocModel(_loginBloc!, _homeBloc!) : _allBlocModel;
+    } else if (pageIntent == EnumPageIntent.Login) {
       return _loginPageBlocModel = (forceCreateNewInstance || _loginPageBlocModel == null)
           ? LoginPageBlocModel(_loginBloc!, _homeBloc!)
           : _loginPageBlocModel;

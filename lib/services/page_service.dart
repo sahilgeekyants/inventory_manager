@@ -5,7 +5,8 @@ class PageService {
   EnumPageIntent? pageIntent;
   PageService(this.pageIntent);
 
-  dynamic getBlocModel({bool forceCreateNewInstance = false}) {
-    return BlocProvider(pageIntent, forceCreateNewInstance: forceCreateNewInstance).getBlocModel();
+  dynamic getBlocModel({bool forceCreateNewInstance = false, bool getAllBlocModel = false}) {
+    return BlocProvider(pageIntent, forceCreateNewInstance: forceCreateNewInstance)
+        .getBlocModel(getAllBlocModel: getAllBlocModel);
   }
 }

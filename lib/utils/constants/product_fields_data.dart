@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 class ProductFieldsData {
   static bool isFieldTypeDropDown(String fieldType) {
@@ -8,10 +8,10 @@ class ProductFieldsData {
   }
 
   static List<String> getRecordFieldData(String fieldName) {
-    return _productAllFieldsData[fieldName]!;
+    return ProductAllFieldsData[fieldName]!;
   }
 
-  static const Map<String, List<String>> _productAllFieldsData = {
+  static const Map<String, List<String>> ProductAllFieldsData = {
     "RECORD_NO": [
       "Record No",
       "DISP_ONLY",

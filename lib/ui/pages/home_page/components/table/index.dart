@@ -37,7 +37,8 @@ class _CustomTableState extends State<CustomTable> {
     super.didUpdateWidget(oldWidget);
   }
 
-  List<Widget> _buildCells(int count, List<String?> data, bool isRecordNo) {
+  List<Widget> _buildCells(
+      int count, List<String?> data, bool isRecordNo, bool isClickable) {
     return List<Widget>.generate(
       count,
       (index) {
@@ -55,6 +56,7 @@ class _CustomTableState extends State<CustomTable> {
           index: index,
           isRecordNo: isRecordNo,
           data: data,
+          isClickable: isClickable,
           isDropDown: ProductFieldsData.isFieldTypeDropDown(
             ProductFieldsData.getRecordFieldData(properties[index])[1],
           ),
@@ -78,6 +80,7 @@ class _CustomTableState extends State<CustomTable> {
               },
             ),
             false,
+            true,
           )
         ],
       ),
@@ -149,6 +152,7 @@ class _CustomTableState extends State<CustomTable> {
                             return allRecords.keys.toList()[index];
                           }),
                           true,
+                          false,
                         ),
                       ],
                     ),

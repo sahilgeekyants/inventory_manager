@@ -9,7 +9,7 @@ class TableShadow {
       Positioned(
         left: -2.toWidth,
         child: Container(
-          width: 142.toWidth,
+          width: 90.toWidth,
           height: ((allRecords.keys.toList().length + 1) * 50).toHeight,
           decoration: const BoxDecoration(
             boxShadow: [
@@ -32,7 +32,7 @@ class TableShadow {
       ),
       Positioned(
         child: Container(
-          width: 140.toWidth,
+          width: 90.toWidth,
           height: ((allRecords.keys.toList().length + 1) * 50).toHeight -
               1.toHeight,
           decoration: const BoxDecoration(

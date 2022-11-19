@@ -42,6 +42,16 @@ class _CustomTableState extends State<CustomTable> {
       count,
       (index) {
         return CustomTableCell(
+          width: isRecordNo
+              ? 90.toWidth
+              : ProductFieldsData.getRecordFieldData(properties[index])[0]
+                              .length *
+                          13.toWidth <
+                      100.toWidth
+                  ? 100.toWidth
+                  : ProductFieldsData.getRecordFieldData(properties[index])[0]
+                          .length *
+                      13.toWidth,
           index: index,
           isRecordNo: isRecordNo,
           data: data,
@@ -95,7 +105,7 @@ class _CustomTableState extends State<CustomTable> {
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          width: 140.toWidth,
+                          width: 90.toWidth,
                           height: 50.toHeight,
                           decoration: const BoxDecoration(
                             color: CommonColors.kSecondaryBLueColor,
@@ -107,11 +117,13 @@ class _CustomTableState extends State<CustomTable> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text(
+                                      Text(
                                         "Serial No",
                                         style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
+                                          fontSize: 14.toFont,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                       SizedBox(
@@ -153,35 +165,37 @@ class _CustomTableState extends State<CustomTable> {
                               (index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  width: 140.toWidth,
+                                  width: ProductFieldsData.getRecordFieldData(
+                                                      properties[index])[0]
+                                                  .length *
+                                              13.toWidth <
+                                          100.toWidth
+                                      ? 100.toWidth
+                                      : ProductFieldsData.getRecordFieldData(
+                                                  properties[index])[0]
+                                              .length *
+                                          13.toWidth,
                                   height: 50.toHeight,
                                   color: CommonColors.kSecondaryBLueColor,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Spacer(
-                                        flex: 1,
-                                      ),
-                                      Expanded(
-                                        flex: 5,
-                                        child: Text(
-                                          ProductFieldsData.getRecordFieldData(
-                                              properties[index])[0],
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontFamily: CommonFonts.Poppins,
-                                            color: CommonColors.kTextWhiteColor,
-                                          ),
+                                      Text(
+                                        ProductFieldsData.getRecordFieldData(
+                                            properties[index])[0],
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontFamily: CommonFonts.Poppins,
+                                          color: CommonColors.kTextWhiteColor,
+                                          fontSize: 14.toFont,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: TableColumnSortButton(
-                                          onPressed: () {},
-                                        ),
+                                      SizedBox(
+                                        width: 10.toWidth,
                                       ),
-                                      const Spacer(
-                                        flex: 1,
+                                      TableColumnSortButton(
+                                        onPressed: () {},
                                       ),
                                     ],
                                   ),

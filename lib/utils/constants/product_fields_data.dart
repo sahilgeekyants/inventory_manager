@@ -161,7 +161,7 @@ class ProductFieldsData {
       "TEXT INPUT",
     ],
     "BU_DH_CUST_COL47": [
-      "Comments & Remarks Column",
+      "Comments & Remarks",
       "DISP_ONLY",
     ],
     "BU_DH_CUST_COL48": [

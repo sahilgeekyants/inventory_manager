@@ -28,9 +28,9 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   Future isAuthentication() async {
     try {
       //walk through
-      bool iswalkThroughComplete = await localStorage.getIsWalkThroughComplete();
-      if (!iswalkThroughComplete) {
-        await localStorage.setIsWalkThroughComplete(status: true);
+      bool isUserLoggedIn = await localStorage.getIsUserLoggedIn();
+      if (!isUserLoggedIn) {
+        await localStorage.setIsUserLoggedIn(status: true);
         if (kDebugMode) print('goto login now after splash');
         //go to login
         navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);

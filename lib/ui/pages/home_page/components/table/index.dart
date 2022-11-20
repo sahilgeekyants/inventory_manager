@@ -37,17 +37,17 @@ class _CustomTableState extends State<CustomTable> {
     super.didUpdateWidget(oldWidget);
   }
 
+  double getCellWidth(int columnTitleLen) {
+    return (columnTitleLen * 8.toWidth) + 40.toWidth;
+  }
+
   List<Widget> _buildCells(int count, List<String?> data, bool isRecordNo, bool isClickable) {
     return List<Widget>.generate(
       count,
       (index) {
         int columnTitleLen = ProductFieldsData.getRecordFieldData(properties[index])[0].length;
         return CustomTableCell(
-          width: isRecordNo
-              ? 90.toWidth
-              : columnTitleLen * 13.toWidth < 100.toWidth
-                  ? 100.toWidth
-                  : columnTitleLen * 13.toWidth,
+          cellWidth: isRecordNo ? 90.toWidth : getCellWidth(columnTitleLen),
           index: index,
           isRecordNo: isRecordNo,
           data: data,
@@ -115,7 +115,7 @@ class _CustomTableState extends State<CustomTable> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Serial No",
+                                        "Sr No",
                                         style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
@@ -161,13 +161,10 @@ class _CustomTableState extends State<CustomTable> {
                             children: List.generate(
                               properties.length,
                               (index) {
+                                int columnTitleLen = ProductFieldsData.getRecordFieldData(properties[index])[0].length;
                                 return Container(
                                   alignment: Alignment.center,
-                                  width: ProductFieldsData.getRecordFieldData(properties[index])[0].length *
-                                              13.toWidth <
-                                          100.toWidth
-                                      ? 100.toWidth
-                                      : ProductFieldsData.getRecordFieldData(properties[index])[0].length * 13.toWidth,
+                                  width: getCellWidth(columnTitleLen),
                                   height: 50.toHeight,
                                   color: CommonColors.kSecondaryBLueColor,
                                   child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
+import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class BottomModalFiltersList extends StatelessWidget {
@@ -27,6 +28,7 @@ class BottomModalFiltersList extends StatelessWidget {
           children: List.generate(
             properties.length,
             (index) {
+              List<String> fieldData = ProductFieldsData.getRecordFieldData(properties[index]);
               return Container(
                 width: (MediaQuery.of(context).size.width / 2) - 20.toWidth,
                 child: Row(
@@ -38,9 +40,7 @@ class BottomModalFiltersList extends StatelessWidget {
                           height: 35.toHeight,
                           width: 20.toWidth,
                           child: Transform.scale(
-                            scale: MediaQuery.of(context).size.height >= 1000
-                                ? 1.4
-                                : 1,
+                            scale: MediaQuery.of(context).size.height >= 1000 ? 1.4 : 1,
                             child: Checkbox(
                               side: BorderSide(
                                 width: 1.toHeight,
@@ -73,7 +73,7 @@ class BottomModalFiltersList extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        properties[index],
+                        fieldData[0],
                         style: TextStyle(
                           fontFamily: CommonFonts.Poppins,
                           fontSize: 10.toFont,

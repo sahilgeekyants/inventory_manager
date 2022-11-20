@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
     ).then((value) {
-      print(value);
+      if (kDebugMode) print(value);
       setState(() {
         if (value != null) {
           checkedProperties = value;
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 showErrorSnackBar(context, errMsg);
               } else if (state is LogoutSuccessState || state is UserInfoUnavailableLoginAgainState) {
                 //remove all data of user from app
-                await localStorage.setIsWalkThroughComplete(status: false);
+                await localStorage.setIsUserLoggedIn(status: false);
                 //go to loginPage
                 navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
               } else if (state is GetUserDataEmptyState) {

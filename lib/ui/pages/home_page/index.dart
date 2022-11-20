@@ -14,10 +14,10 @@ import 'package:inventory_manager/services/config/shared_preference.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_sheet/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/home_page_header/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/index.dart';
-import 'package:inventory_manager/ui/pages/home_page/home_page_dummy_data.dart';
 import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 import 'package:inventory_manager/utils/constants/user_roles.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
+import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 
 class HomePage extends StatefulWidget {
   final HomePageBlocModel homePageBlocModel;
@@ -32,24 +32,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeBloc _homeBloc;
-  // Map<String, Map<String, dynamic>> allRecords =
-  late String initialRecordNumber;
-  late List<String> properties;
   late List<bool> checkedProperties;
   @override
   void initState() {
-    initialRecordNumber = getAllRecords().keys.toList()[0];
-    properties = getAllRecords()[initialRecordNumber]!.keys.toList();
-    checkedProperties = List.generate(properties.length, (index) {
-      return true;
-    });
+    checkedProperties = List.generate(
+      ProductFieldsData.ProductAllFieldsData.keys.toList().length,
+      (index) => true,
+    );
     super.initState();
     _homeBloc = widget.homePageBlocModel.homeBloc;
-    //added event here for homeBloc to fetch data
     _homeBloc.add(const GetUserDataEvent());
   }
 
-  openDrawer(BuildContext context) {
+  openDrawer(BuildContext context, List<String> properties) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -62,6 +57,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
     ).then((value) {
+      print(value);
       setState(() {
         if (value != null) {
           checkedProperties = value;
@@ -81,8 +77,7 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Map<String, Map<String, dynamic>> getFilteredArray() {
-    Map<String, Map<String, dynamic>> allRecords = getAllRecords();
+  Map<String, Map<String, dynamic>> getFilteredArray(Map<String, Map<String, dynamic>> allRecords) {
     Map<String, Map<String, dynamic>> filteredArray = {...allRecords};
     String initialRecordNumber = allRecords.keys.toList()[0];
     List<String> properties = allRecords[initialRecordNumber]!.keys.toList();
@@ -111,7 +106,7 @@ class _HomePageState extends State<HomePage> {
               if (state is LogoutFailedState || state is GetUserDataFailedState) {
                 String errMsg = (state is LogoutFailedState) ? state.error : (state as GetUserDataFailedState).error;
                 showErrorSnackBar(context, errMsg);
-              } else if (state is LogoutSuccessState) {
+              } else if (state is LogoutSuccessState || state is UserInfoUnavailableLoginAgainState) {
                 //remove all data of user from app
                 await localStorage.setIsWalkThroughComplete(status: false);
                 //go to loginPage
@@ -146,23 +141,17 @@ class _HomePageState extends State<HomePage> {
               } else if (state is GetUserDataSuccessState) {
                 var productsData = state.productslist.products;
                 Map<String, dynamic> infoJson;
+                Map<String, Map<String, dynamic>> allRecords = {};
+                int serialNumber = 1;
+                String initialRecordNumber;
+                List<String> properties = [];
                 for (var productInfo in productsData!) {
                   infoJson = ProductInfo().toJson(productInfo);
-                  int productSrNo = 0;
-                  if (kDebugMode) {
-                    print('product SrNo- $productSrNo --->');
-                    print('product data  ${infoJson.toString()}');
-                  }
-                  infoJson.forEach((fieldKey, fieldValue) {
-                    productSrNo++;
-                    List<String> fieldData = ProductFieldsData.getRecordFieldData(fieldKey);
-                    String fieldLable = fieldData[0];
-                    String fieldType = fieldData[1];
-                    bool isFieldTypeDropDown = ProductFieldsData.isFieldTypeDropDown(fieldType);
-                    // if (kDebugMode) print('product data  ${infoJson.toString()}');
-                  });
+                  allRecords[serialNumber.toString()] = infoJson;
+                  serialNumber++;
+                  initialRecordNumber = allRecords.keys.toList()[0];
+                  properties = allRecords[initialRecordNumber]!.keys.toList();
                 }
-
                 UserRole userRole = state.userRole;
                 String userLabel = (userRole == UserRole.SURVEYOR_QC) ? 'Data Surveyor QC' : 'Data Surveyor';
                 return Column(
@@ -210,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        openDrawer(context);
+                                        openDrawer(context, properties);
                                       },
                                       child: Icon(
                                         Icons.filter_list_alt,
@@ -227,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                             height: 10.toHeight,
                           ),
                           CustomTable(
-                            allRecords: getFilteredArray(),
+                            allRecords: getFilteredArray(allRecords),
                           ),
                         ],
                       ),

@@ -3,6 +3,7 @@ import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_column_sort_button.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_shadow.dart';
+import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 import 'components/custom_table_cell.dart';
 
@@ -36,14 +37,24 @@ class _CustomTableState extends State<CustomTable> {
     super.didUpdateWidget(oldWidget);
   }
 
-  List<Widget> _buildCells(int count, List<String> data, bool isRecordNo) {
+  List<Widget> _buildCells(int count, List<String?> data, bool isRecordNo, bool isClickable) {
     return List<Widget>.generate(
       count,
       (index) {
+        int columnTitleLen = ProductFieldsData.getRecordFieldData(properties[index])[0].length;
         return CustomTableCell(
+          width: isRecordNo
+              ? 90.toWidth
+              : columnTitleLen * 13.toWidth < 100.toWidth
+                  ? 100.toWidth
+                  : columnTitleLen * 13.toWidth,
           index: index,
           isRecordNo: isRecordNo,
           data: data,
+          isClickable: isClickable,
+          isDropDown: ProductFieldsData.isFieldTypeDropDown(
+            ProductFieldsData.getRecordFieldData(properties[index])[1],
+          ),
         );
       },
     );
@@ -59,14 +70,11 @@ class _CustomTableState extends State<CustomTable> {
             List.generate(
               properties.length,
               (index2) {
-                if (properties[index2].toLowerCase() == "region") {
-                  return "Region";
-                }
-                return allRecords[allRecords.keys.toList()[index]]![
-                    properties[index2]];
+                return allRecords[allRecords.keys.toList()[index]]![properties[index2]];
               },
             ),
             false,
+            true,
           )
         ],
       ),
@@ -94,7 +102,7 @@ class _CustomTableState extends State<CustomTable> {
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          width: 120.toWidth,
+                          width: 90.toWidth,
                           height: 50.toHeight,
                           decoration: const BoxDecoration(
                             color: CommonColors.kSecondaryBLueColor,
@@ -106,11 +114,13 @@ class _CustomTableState extends State<CustomTable> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text(
-                                        "Record No",
+                                      Text(
+                                        "Serial No",
                                         style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
+                                          fontSize: 14.toFont,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                       SizedBox(
@@ -131,11 +141,13 @@ class _CustomTableState extends State<CustomTable> {
                           ),
                         ),
                         ..._buildCells(
-                            allRecords.keys.toList().length,
-                            List.generate(allRecords.length, (index) {
-                              return allRecords.keys.toList()[index];
-                            }),
-                            true),
+                          allRecords.keys.toList().length,
+                          List.generate(allRecords.length, (index) {
+                            return allRecords.keys.toList()[index];
+                          }),
+                          true,
+                          false,
+                        ),
                       ],
                     ),
                   ),
@@ -151,17 +163,24 @@ class _CustomTableState extends State<CustomTable> {
                               (index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  width: 120.toWidth,
+                                  width: ProductFieldsData.getRecordFieldData(properties[index])[0].length *
+                                              13.toWidth <
+                                          100.toWidth
+                                      ? 100.toWidth
+                                      : ProductFieldsData.getRecordFieldData(properties[index])[0].length * 13.toWidth,
                                   height: 50.toHeight,
                                   color: CommonColors.kSecondaryBLueColor,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        properties[index],
-                                        style: const TextStyle(
+                                        ProductFieldsData.getRecordFieldData(properties[index])[0],
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
+                                          fontSize: 14.toFont,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                       SizedBox(

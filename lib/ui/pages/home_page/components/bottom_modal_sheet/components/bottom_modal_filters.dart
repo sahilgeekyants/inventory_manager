@@ -71,13 +71,15 @@ class BottomModalFiltersList extends StatelessWidget {
                     SizedBox(
                       width: 10.toWidth,
                     ),
-                    Text(
-                      properties[index],
-                      style: TextStyle(
-                        fontFamily: CommonFonts.Poppins,
-                        fontSize: 12.toFont,
-                        color: CommonColors.kTextColorLight,
-                        fontWeight: FontWeight.w400,
+                    Flexible(
+                      child: Text(
+                        properties[index],
+                        style: TextStyle(
+                          fontFamily: CommonFonts.Poppins,
+                          fontSize: 10.toFont,
+                          color: CommonColors.kTextColorLight,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ],

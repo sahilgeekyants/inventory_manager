@@ -3,6 +3,7 @@ import 'package:inventory_manager/blocs/home/home_bloc.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/home_page_header/components/home_profile_menu.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class HomePageHeader extends StatelessWidget {
@@ -31,7 +32,7 @@ class HomePageHeader extends StatelessWidget {
               ),
             ),
             Text(
-              "Back",
+              AppStrings.back,
               style: TextStyle(
                 fontFamily: CommonFonts.Poppins,
                 fontWeight: FontWeight.w400,

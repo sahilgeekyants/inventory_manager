@@ -15,4 +15,8 @@ class CommonColors {
   static const Color kTextFieldColor = Color(0xff9d9d9d);
   static const Color kSearchButtonColor = Color(0xffA0ABC0);
   static const Color kBorderLightGrey = Color(0xffE3E3E3);
+  static const Color kTextFieldBorderColor = Color(0xffB2B6B9);
+  static const Color kRegisterButtonRedColor = Color(0xffFF0000);
+  static const Color kLoginButtonShadowColor = Color(0x55529242);
+  static const Color kShowButtonShadowColor = Color(0x034f4f1a);
 }

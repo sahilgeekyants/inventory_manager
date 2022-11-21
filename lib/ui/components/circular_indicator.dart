@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventory_manager/resources/common_colors.dart';
 
 class CircularIndicator extends StatelessWidget {
   const CircularIndicator({super.key});
@@ -7,7 +8,7 @@ class CircularIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
         child: CircularProgressIndicator(
-      backgroundColor: Colors.blue,
+      backgroundColor: CommonColors.kSecondaryBLueColor,
     ));
   }
 }

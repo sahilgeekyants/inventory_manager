@@ -4,6 +4,7 @@ import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_column_sort_button.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/components/table_shadow.dart';
 import 'package:inventory_manager/utils/constants/product_fields_data.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 import 'components/custom_table_cell.dart';
 
@@ -41,11 +42,13 @@ class _CustomTableState extends State<CustomTable> {
     return (columnTitleLen * 8.toWidth) + 40.toWidth;
   }
 
-  List<Widget> _buildCells(int count, List<String?> data, bool isRecordNo, bool isClickable) {
+  List<Widget> _buildCells(
+      int count, List<String?> data, bool isRecordNo, bool isClickable) {
     return List<Widget>.generate(
       count,
       (index) {
-        int columnTitleLen = ProductFieldsData.getRecordFieldData(properties[index])[0].length;
+        int columnTitleLen =
+            ProductFieldsData.getRecordFieldData(properties[index])[0].length;
         return CustomTableCell(
           cellWidth: isRecordNo ? 90.toWidth : getCellWidth(columnTitleLen),
           index: index,
@@ -70,7 +73,8 @@ class _CustomTableState extends State<CustomTable> {
             List.generate(
               properties.length,
               (index2) {
-                return allRecords[allRecords.keys.toList()[index]]![properties[index2]];
+                return allRecords[allRecords.keys.toList()[index]]![
+                    properties[index2]];
               },
             ),
             false,
@@ -113,7 +117,7 @@ class _CustomTableState extends State<CustomTable> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Sr No",
+                                        AppStrings.srNo,
                                         style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,
                                           color: CommonColors.kTextWhiteColor,
@@ -157,7 +161,10 @@ class _CustomTableState extends State<CustomTable> {
                             children: List.generate(
                               properties.length,
                               (index) {
-                                int columnTitleLen = ProductFieldsData.getRecordFieldData(properties[index])[0].length;
+                                int columnTitleLen =
+                                    ProductFieldsData.getRecordFieldData(
+                                            properties[index])[0]
+                                        .length;
                                 return Container(
                                   alignment: Alignment.center,
                                   width: getCellWidth(columnTitleLen),
@@ -167,7 +174,8 @@ class _CustomTableState extends State<CustomTable> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        ProductFieldsData.getRecordFieldData(properties[index])[0],
+                                        ProductFieldsData.getRecordFieldData(
+                                            properties[index])[0],
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontFamily: CommonFonts.Poppins,

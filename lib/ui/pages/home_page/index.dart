@@ -18,6 +18,7 @@ import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_she
 import 'package:inventory_manager/ui/pages/home_page/components/home_page_header/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/index.dart';
 import 'package:inventory_manager/utils/constants/product_fields_data.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/constants/user_roles.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   openDrawer(BuildContext context, List<String> properties) {
     return showModalBottomSheet(
-      backgroundColor: Colors.transparent,
+      backgroundColor: CommonColors.kTransparentColor,
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
@@ -96,7 +97,8 @@ class _HomePageState extends State<HomePage> {
               } else if (state is GetUserDataFailedState ||
                   state is LogoutFailedState ||
                   state is GetUserDataEmptyState) {
-                String stateResponse = (state is GetUserDataEmptyState) ? state.response : 'Something Went Wrong';
+                String stateResponse =
+                    (state is GetUserDataEmptyState) ? state.response : AppStrings.somethingWentWrong;
                 return Center(
                     child: Text(stateResponse,
                         style: TextStyle(
@@ -132,7 +134,8 @@ class _HomePageState extends State<HomePage> {
                   } while (serialNumber < maxIndex);
                 }
                 UserRole userRole = state.userRole;
-                String userLabel = (userRole == UserRole.SURVEYOR_QC) ? 'Data Surveyor QC' : 'Data Surveyor';
+                String userLabel =
+                    (userRole == UserRole.SURVEYOR_QC) ? AppStrings.dataSurveyorQC : AppStrings.dataSurveyor;
                 return Column(
                   children: [
                     SizedBox(height: 50.toHeight, child: HomePageHeader(homeBloc: _homeBloc)),

@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory_manager/blocs/home/home_bloc.dart';
-import 'package:inventory_manager/blocs/home/home_events.dart';
 import 'package:inventory_manager/blocs/login/login_bloc.dart';
 import 'package:inventory_manager/blocs/login/login_events.dart';
 import 'package:inventory_manager/blocs/login/login_states.dart';
@@ -14,6 +12,8 @@ import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/ui/components/circular_indicator.dart';
+import 'package:inventory_manager/ui/components/show_error_snack_bar.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class LoginPage extends StatefulWidget {
@@ -76,14 +76,7 @@ class _LoginPageState extends State<LoginPage> {
               if (kDebugMode) print('in UI listener failed - state : LoginFailedState');
               LoginFailedState failState = state;
               //show error message
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('${failState.error}, Please try again'),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                // margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 100, right: 20, left: 20),
-              ));
+              showErrorSnackBar(context, '${failState.error}, ${AppStrings.tryAgain}');
             }
           },
           builder: (context, LoginState state) {
@@ -96,35 +89,28 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 20.toHeight),
                 Container(
                   height: 280.toHeight,
-                  // child: SvgPicture.asset(
-                  //   CommonAssets.twoPersonGroupImage,
-                  // ),
                   child: Image.asset(CommonAssets.twoPersonGroupPngImage),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Container(
-                    //   height: 30.toHeight,
-                    //   child: Image.asset(CommonAssets.logoPilogPng),
-                    // ),
                     SizedBox(height: 10.toHeight),
                     Text(
-                      "Sign in to",
+                      AppStrings.signInTo,
                       style: TextStyle(
                         fontFamily: CommonFonts.Poppins,
                         fontWeight: FontWeight.w700,
                         fontSize: 32.toFont,
-                        color: Colors.white,
+                        color: CommonColors.kTextWhiteColor,
                       ),
                     ),
                     Text(
-                      "Pilog Group",
+                      AppStrings.pilogGroup,
                       style: TextStyle(
                         fontFamily: CommonFonts.Poppins,
                         fontWeight: FontWeight.w500,
                         fontSize: 20.toFont,
-                        color: Colors.white,
+                        color: CommonColors.kTextWhiteColor,
                       ),
                     ),
                   ],
@@ -134,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Color(0xffB2B6B9),
+                        color: CommonColors.kTextFieldBorderColor,
                         width: 1.0,
                         style: BorderStyle.solid,
                         strokeAlign: StrokeAlign.inside,
@@ -144,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextField(
                     style: TextStyle(
                       fontSize: 14.toFont,
-                      color: Colors.white,
+                      color: CommonColors.kTextWhiteColor,
                     ),
                     controller: userNameTextController,
                     focusNode: userNameFocusNode,
@@ -164,17 +150,18 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(
-                          Icons.mail_outline,
-                          color: Colors.white,
-                          size: 14.toFont,
-                        ),
-                        hintText: 'Enter email or username',
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.toFont,
-                        )),
+                      border: InputBorder.none,
+                      icon: Icon(
+                        Icons.mail_outline,
+                        color: CommonColors.kTextWhiteColor,
+                        size: 14.toFont,
+                      ),
+                      hintText: AppStrings.usernameHintText,
+                      hintStyle: TextStyle(
+                        color: CommonColors.kTextWhiteColor,
+                        fontSize: 14.toFont,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 30.toHeight),
@@ -182,13 +169,13 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
-                    color: Color(0xffB2B6B9),
+                    color: CommonColors.kTextFieldBorderColor,
                     width: 1.0,
                     style: BorderStyle.solid,
                     strokeAlign: StrokeAlign.inside,
                   ))),
                   child: TextField(
-                    style: TextStyle(fontSize: 14.toFont, color: Colors.white),
+                    style: TextStyle(fontSize: 14.toFont, color: CommonColors.kTextWhiteColor),
                     controller: passWordTextController,
                     focusNode: passWordFocusNode,
                     keyboardType: TextInputType.visiblePassword,
@@ -218,17 +205,17 @@ class _LoginPageState extends State<LoginPage> {
                           icon: Icon(
                             hidePassword ? Icons.visibility_off : Icons.visibility,
                             size: 16.toFont,
-                            color: Colors.white,
+                            color: CommonColors.kTextWhiteColor,
                           ),
                         ),
                         icon: Icon(
                           Icons.lock_outline,
-                          color: Colors.white,
+                          color: CommonColors.kTextWhiteColor,
                           size: 14.toFont,
                         ),
-                        hintText: 'Enter password',
+                        hintText: AppStrings.passwordHintText,
                         hintStyle: TextStyle(
-                          color: Colors.white,
+                          color: CommonColors.kTextWhiteColor,
                           fontSize: 14.toFont,
                         )),
                   ),
@@ -240,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextButton(
                       onPressed: () {},
                       child: Text(
-                        "Forgot Password ?",
+                        AppStrings.forgotPassword,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 12.toFont,
@@ -267,7 +254,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(55529242),
+                            color: CommonColors.kLoginButtonShadowColor,
                             blurRadius: 24.toHeight,
                             offset: const Offset(
                               0,
@@ -275,9 +262,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ],
-                        color: Colors.white,
+                        color: CommonColors.kTextWhiteColor,
                         border: Border.all(
-                          color: Colors.white,
+                          color: CommonColors.kTextWhiteColor,
                           width: 1.0,
                           style: BorderStyle.solid,
                           strokeAlign: StrokeAlign.inside,
@@ -288,7 +275,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: ScreenUtil.screenWidth - 60.toWidth,
                         child: Center(
                           child: Text(
-                            'Login',
+                            AppStrings.login,
                             style: TextStyle(
                               fontSize: 16.toFont,
                               fontWeight: FontWeight.w600,
@@ -300,7 +287,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                // SizedBox(height: 10.toHeight),
                 Container(
                   height: 50.toWidth,
                   child: Row(
@@ -308,23 +294,21 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account?",
+                        AppStrings.dontHaveAnAcc,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: CommonColors.kTextWhiteColor,
                           fontFamily: CommonFonts.Poppins,
                           fontWeight: FontWeight.w600,
                           fontSize: 14.toFont,
                         ),
                       ),
                       TextButton(
-                        //
-                        //
                         //Implement Register New User Logic Here
                         onPressed: () {},
                         child: Text(
-                          "Register here.",
+                          AppStrings.registerHere,
                           style: TextStyle(
-                            color: const Color(0xffFF0000),
+                            color: CommonColors.kRegisterButtonRedColor,
                             fontFamily: CommonFonts.Poppins,
                             fontWeight: FontWeight.w600,
                             fontSize: 14.toFont,

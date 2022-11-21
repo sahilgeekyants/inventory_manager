@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class BottomModalStatusContainer extends StatelessWidget {
@@ -24,7 +25,7 @@ class BottomModalStatusContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Status",
+            AppStrings.status,
             style: TextStyle(
               color: CommonColors.kBlackIconColor,
               fontFamily: CommonFonts.Poppins,

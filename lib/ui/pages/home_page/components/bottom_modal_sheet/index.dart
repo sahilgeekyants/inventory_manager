@@ -6,6 +6,7 @@ import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_she
 import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_sheet/components/bottom_modal_search_box.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_sheet/components/bottom_modal_show_button.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_sheet/components/bottom_modal_status.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class BottomModalWidget extends StatefulWidget {
@@ -44,7 +45,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
           horizontal: 20.toWidth,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: CommonColors.kTextWhiteColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10.toHeight),
             topRight: Radius.circular(10.toHeight),
@@ -69,7 +70,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                   ),
                 ),
                 Text(
-                  "Filter",
+                  AppStrings.filter,
                   style: TextStyle(
                     fontFamily: CommonFonts.Poppins,
                     fontSize: 16.toFont,
@@ -90,7 +91,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                     );
                   },
                   child: Text(
-                    "Reset",
+                    AppStrings.reset,
                     style: TextStyle(
                       fontFamily: CommonFonts.Poppins,
                       fontSize: 16.toFont,
@@ -112,7 +113,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Filter By Category",
+                  AppStrings.filterByCat,
                   style: TextStyle(
                     fontFamily: CommonFonts.Poppins,
                     fontSize: 16.toFont,
@@ -148,7 +149,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Batch ID",
+                            AppStrings.batchId,
                             style: TextStyle(
                               color: CommonColors.kBlackIconColor,
                               fontFamily: CommonFonts.Poppins,
@@ -157,7 +158,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                             ),
                           ),
                           Text(
-                            "1-100",
+                            AppStrings.oneToHundred,
                             style: TextStyle(
                               color: CommonColors.kSecondaryBLueColor,
                               fontFamily: CommonFonts.Poppins,

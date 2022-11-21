@@ -7,6 +7,7 @@ import 'package:inventory_manager/main.dart';
 import 'package:inventory_manager/resources/common_assets.dart';
 import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class SplashPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
-  String welcomeText = 'Welcome to Pilog';
+  String welcomeText = AppStrings.welcomeText;
 
   startTime() async {
     var duration = const Duration(seconds: 3);

@@ -15,6 +15,7 @@ import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_she
 import 'package:inventory_manager/ui/pages/home_page/components/home_page_header/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/index.dart';
 import 'package:inventory_manager/utils/constants/product_fields_data.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/constants/user_roles.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   openDrawer(BuildContext context, List<String> properties) {
     return showModalBottomSheet(
-      backgroundColor: Colors.transparent,
+      backgroundColor: CommonColors.kTransparentColor,
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
@@ -76,7 +77,8 @@ class _HomePageState extends State<HomePage> {
     ));
   }
 
-  Map<String, Map<String, dynamic>> getFilteredArray(Map<String, Map<String, dynamic>> allRecords) {
+  Map<String, Map<String, dynamic>> getFilteredArray(
+      Map<String, Map<String, dynamic>> allRecords) {
     Map<String, Map<String, dynamic>> filteredArray = {...allRecords};
     String initialRecordNumber = allRecords.keys.toList()[0];
     List<String> properties = allRecords[initialRecordNumber]!.keys.toList();
@@ -101,33 +103,45 @@ class _HomePageState extends State<HomePage> {
           child: BlocConsumer<HomeBloc, HomeState>(
             bloc: _homeBloc,
             listener: (context, HomeState state) async {
-              if (kDebugMode) print('in Home UI HomeBloc listener - state : $state');
-              if (state is LogoutFailedState || state is GetUserDataFailedState) {
-                String errMsg = (state is LogoutFailedState) ? state.error : (state as GetUserDataFailedState).error;
+              if (kDebugMode)
+                print('in Home UI HomeBloc listener - state : $state');
+              if (state is LogoutFailedState ||
+                  state is GetUserDataFailedState) {
+                String errMsg = (state is LogoutFailedState)
+                    ? state.error
+                    : (state as GetUserDataFailedState).error;
                 showErrorSnackBar(context, errMsg);
-              } else if (state is LogoutSuccessState || state is UserInfoUnavailableLoginAgainState) {
+              } else if (state is LogoutSuccessState ||
+                  state is UserInfoUnavailableLoginAgainState) {
                 //remove all data of user from app
                 await localStorage.setIsUserLoggedIn(status: false);
                 //go to loginPage
-                navigatorKey.currentState!.pushReplacementNamed(Routes.loginPath);
+                navigatorKey.currentState!
+                    .pushReplacementNamed(Routes.loginPath);
               } else if (state is GetUserDataEmptyState) {
                 String msg = state.response;
                 showErrorSnackBar(context, msg);
-                if (kDebugMode) print('GetUserDataEmptyState: in Home UI HomeBloc msg : $msg');
+                if (kDebugMode)
+                  print(
+                      'GetUserDataEmptyState: in Home UI HomeBloc msg : $msg');
               }
             },
             builder: (context, HomeState state) {
-              if (state is GetUserDataInitialState || state is LogoutInitialState) {
-                if (kDebugMode) print('in Home UI builder loading - state : $state');
+              if (state is GetUserDataInitialState ||
+                  state is LogoutInitialState) {
+                if (kDebugMode)
+                  print('in Home UI builder loading - state : $state');
                 return const Center(
                   child: CircularProgressIndicator(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: CommonColors.kSecondaryBLueColor,
                   ),
                 );
               } else if (state is GetUserDataFailedState ||
                   state is LogoutFailedState ||
                   state is GetUserDataEmptyState) {
-                String stateResponse = (state is GetUserDataEmptyState) ? state.response : 'Something Went Wrong';
+                String stateResponse = (state is GetUserDataEmptyState)
+                    ? state.response
+                    : AppStrings.somethingWentWrong;
                 return Center(
                     child: Text(
                   stateResponse,
@@ -172,7 +186,9 @@ class _HomePageState extends State<HomePage> {
                 // }
                 //
                 UserRole userRole = state.userRole;
-                String userLabel = (userRole == UserRole.SURVEYOR_QC) ? 'Data Surveyor QC' : 'Data Surveyor';
+                String userLabel = (userRole == UserRole.SURVEYOR_QC)
+                    ? AppStrings.dataSurveyorQC
+                    : AppStrings.dataSurveyor;
                 return Column(
                   children: [
                     SizedBox(
@@ -245,7 +261,7 @@ class _HomePageState extends State<HomePage> {
               }
               return const Center(
                 child: CircularProgressIndicator(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: CommonColors.kSecondaryBLueColor,
                 ),
               );
             },

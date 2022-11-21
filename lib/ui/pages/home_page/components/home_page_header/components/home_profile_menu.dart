@@ -3,6 +3,7 @@ import 'package:inventory_manager/blocs/home/home_bloc.dart';
 import 'package:inventory_manager/blocs/home/home_events.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class HomeProfileMenu extends StatelessWidget {
@@ -43,7 +44,7 @@ class HomeProfileMenu extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Profile",
+                      AppStrings.profile,
                       style: TextStyle(
                         fontFamily: CommonFonts.Poppins,
                         fontSize: 16.toFont,
@@ -67,7 +68,7 @@ class HomeProfileMenu extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Settings",
+                      AppStrings.settings,
                       style: TextStyle(
                         fontFamily: CommonFonts.Poppins,
                         fontSize: 16.toFont,
@@ -108,7 +109,7 @@ class HomeProfileMenu extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(
                                       6.toWidth,
                                     ),
-                                    color: Colors.white,
+                                    color: CommonColors.kTextWhiteColor,
                                   ),
                                   height: 110.toHeight,
                                   width: 280.toWidth,
@@ -122,28 +123,35 @@ class HomeProfileMenu extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                             border: Border(
                                               bottom: BorderSide(
-                                                color: CommonColors.kBorderLightGrey,
+                                                color: CommonColors
+                                                    .kBorderLightGrey,
                                               ),
                                             ),
                                           ),
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "Log Out",
+                                                AppStrings.logOut,
                                                 style: TextStyle(
-                                                  fontFamily: CommonFonts.Poppins,
-                                                  color: CommonColors.kBlackIconColor,
+                                                  fontFamily:
+                                                      CommonFonts.Poppins,
+                                                  color: CommonColors
+                                                      .kBlackIconColor,
                                                   fontSize: 17.toFont,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                               Text(
-                                                "Log out successful",
+                                                AppStrings.logOutSuccessful,
                                                 style: TextStyle(
-                                                  fontFamily: CommonFonts.Poppins,
-                                                  color: CommonColors.kBlackIconColor,
+                                                  fontFamily:
+                                                      CommonFonts.Poppins,
+                                                  color: CommonColors
+                                                      .kBlackIconColor,
                                                   fontSize: 14.toFont,
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -159,9 +167,10 @@ class HomeProfileMenu extends StatelessWidget {
                                               Navigator.pop(context);
                                             },
                                             child: Text(
-                                              "OK",
+                                              AppStrings.ok,
                                               style: TextStyle(
-                                                color: CommonColors.kSecondaryBLueColor,
+                                                color: CommonColors
+                                                    .kSecondaryBLueColor,
                                                 fontFamily: CommonFonts.Poppins,
                                                 fontSize: 17.toFont,
                                               ),
@@ -177,7 +186,7 @@ class HomeProfileMenu extends StatelessWidget {
                           });
                         },
                         child: Text(
-                          "Logout",
+                          AppStrings.logOut,
                           style: TextStyle(
                             fontFamily: CommonFonts.Poppins,
                             fontSize: 16.toFont,

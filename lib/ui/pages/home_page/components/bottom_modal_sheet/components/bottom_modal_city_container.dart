@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class BottomModalCityContainer extends StatelessWidget {
@@ -24,7 +25,7 @@ class BottomModalCityContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "City",
+            AppStrings.city,
             style: TextStyle(
               color: CommonColors.kBlackIconColor,
               fontFamily: CommonFonts.Poppins,

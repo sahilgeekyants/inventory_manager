@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
+import 'package:inventory_manager/utils/constants/strings.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class BottomModalShowButton extends StatelessWidget {
@@ -45,7 +46,7 @@ class BottomModalShowButton extends StatelessWidget {
             width: ScreenUtil.screenWidth - 60.toWidth,
             child: Center(
               child: Text(
-                'Show',
+                AppStrings.show,
                 style: TextStyle(
                   fontSize: 16.toFont,
                   fontFamily: CommonFonts.Poppins,

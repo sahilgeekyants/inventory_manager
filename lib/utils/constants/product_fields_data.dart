@@ -11,6 +11,8 @@ class ProductFieldsData {
     return ProductAllFieldsData[fieldName]!;
   }
 
+  static int get allRecordLengthCount => ProductAllFieldsData.keys.toList().length;
+
   static const Map<String, List<String>> ProductAllFieldsData = {
     "RECORD_NO": [
       "Record No",

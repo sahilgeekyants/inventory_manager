@@ -21,9 +21,7 @@ class BottomModalSearchBox extends StatelessWidget {
         ),
         textAlign: TextAlign.start,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(
-              left: 10.toWidth,
-            ),
+            contentPadding: EdgeInsets.only(left: 10.toWidth),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.toWidth),
               borderSide: const BorderSide(

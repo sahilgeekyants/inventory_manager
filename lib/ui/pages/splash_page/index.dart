@@ -66,25 +66,18 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 20.toHeight,
-          horizontal: 30.toWidth,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 20.toHeight, horizontal: 30.toWidth),
         child: ListView(
           children: [
             SizedBox(height: 90.toHeight),
             Container(
               height: 60.toHeight,
-              child: Image.asset(
-                CommonAssets.logoPilogPng,
-              ),
+              child: Image.asset(CommonAssets.logoPilogPng),
             ),
             SizedBox(height: 100.toHeight),
             Container(
               height: 300.toHeight,
-              child: Image.asset(
-                CommonAssets.twoPersonGroupPngImage,
-              ),
+              child: Image.asset(CommonAssets.twoPersonGroupPngImage),
             ),
           ],
         ),

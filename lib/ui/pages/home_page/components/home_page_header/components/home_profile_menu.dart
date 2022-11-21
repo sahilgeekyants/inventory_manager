@@ -30,9 +30,7 @@ class HomeProfileMenu extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(
-                      left: 10.toWidth,
-                    ),
+                    padding: EdgeInsets.only(left: 10.toWidth),
                     alignment: Alignment.centerLeft,
                     width: double.maxFinite,
                     decoration: const BoxDecoration(
@@ -54,9 +52,7 @@ class HomeProfileMenu extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(
-                      left: 10.toWidth,
-                    ),
+                    padding: EdgeInsets.only(left: 10.toWidth),
                     alignment: Alignment.centerLeft,
                     width: double.maxFinite,
                     decoration: const BoxDecoration(
@@ -83,9 +79,7 @@ class HomeProfileMenu extends StatelessWidget {
                       bottomRight: Radius.circular(6.toWidth),
                     ),
                     child: Container(
-                      padding: EdgeInsets.only(
-                        left: 10.toWidth,
-                      ),
+                      padding: EdgeInsets.only(left: 10.toWidth),
                       alignment: Alignment.centerLeft,
                       width: double.maxFinite,
                       decoration: const BoxDecoration(

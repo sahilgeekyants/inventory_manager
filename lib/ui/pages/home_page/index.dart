@@ -11,6 +11,9 @@ import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
 import 'package:inventory_manager/serializers/product_info.dart';
 import 'package:inventory_manager/services/config/shared_preference.dart';
+import 'package:inventory_manager/services/helpers/screen_functions.dart';
+import 'package:inventory_manager/ui/components/circular_indicator.dart';
+import 'package:inventory_manager/ui/components/show_error_snack_bar.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/bottom_modal_sheet/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/home_page_header/index.dart';
 import 'package:inventory_manager/ui/pages/home_page/components/table/index.dart';
@@ -34,11 +37,8 @@ class _HomePageState extends State<HomePage> {
   late List<bool> checkedProperties;
   @override
   void initState() {
-    checkedProperties = List.generate(
-      ProductFieldsData.ProductAllFieldsData.keys.toList().length,
-      (index) => true,
-    );
     super.initState();
+    checkedProperties = List.generate(ProductFieldsData.allRecordLengthCount, (index) => true);
     _homeBloc = widget.homePageBlocModel.homeBloc;
     _homeBloc.add(const GetUserDataEvent());
   }
@@ -65,39 +65,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  showErrorSnackBar(BuildContext context, String errMsg) {
-    //show error message
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('$errMsg, Please try again'),
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
-    ));
-  }
-
-  Map<String, Map<String, dynamic>> getFilteredArray(Map<String, Map<String, dynamic>> allRecords) {
-    Map<String, Map<String, dynamic>> filteredArray = {...allRecords};
-    String initialRecordNumber = allRecords.keys.toList()[0];
-    List<String> properties = allRecords[initialRecordNumber]!.keys.toList();
-    for (int i = 0; i < checkedProperties.length; i++) {
-      if (!checkedProperties[i]) {
-        for (String key in filteredArray.keys.toList()) {
-          filteredArray[key]!.remove(properties[i]);
-        }
-      }
-    }
-    return filteredArray;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10.toWidth,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 10.toWidth),
           child: BlocConsumer<HomeBloc, HomeState>(
             bloc: _homeBloc,
             listener: (context, HomeState state) async {
@@ -119,24 +92,18 @@ class _HomePageState extends State<HomePage> {
             builder: (context, HomeState state) {
               if (state is GetUserDataInitialState || state is LogoutInitialState) {
                 if (kDebugMode) print('in Home UI builder loading - state : $state');
-                return const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.blue,
-                  ),
-                );
+                return const CircularIndicator();
               } else if (state is GetUserDataFailedState ||
                   state is LogoutFailedState ||
                   state is GetUserDataEmptyState) {
                 String stateResponse = (state is GetUserDataEmptyState) ? state.response : 'Something Went Wrong';
                 return Center(
-                    child: Text(
-                  stateResponse,
-                  style: TextStyle(
-                    fontSize: 16.toFont,
-                    fontWeight: FontWeight.w600,
-                    color: CommonColors.kPrimaryBlueColor,
-                  ),
-                ));
+                    child: Text(stateResponse,
+                        style: TextStyle(
+                          fontSize: 16.toFont,
+                          fontWeight: FontWeight.w600,
+                          color: CommonColors.kPrimaryBlueColor,
+                        )));
               } else if (state is GetUserDataSuccessState) {
                 var productsData = state.productslist.products;
                 Map<String, dynamic> infoJson;
@@ -164,25 +131,13 @@ class _HomePageState extends State<HomePage> {
                     serialNumber++;
                   } while (serialNumber < maxIndex);
                 }
-                // else if (serialNumber > maxIndex) {
-                //   do {
-                //     allRecords.remove((serialNumber - 1).toString());
-                //     serialNumber--;
-                //   } while (serialNumber > maxIndex);
-                // }
-                //
                 UserRole userRole = state.userRole;
                 String userLabel = (userRole == UserRole.SURVEYOR_QC) ? 'Data Surveyor QC' : 'Data Surveyor';
                 return Column(
                   children: [
-                    SizedBox(
-                      height: 50.toHeight,
-                      child: HomePageHeader(homeBloc: _homeBloc),
-                    ),
+                    SizedBox(height: 50.toHeight, child: HomePageHeader(homeBloc: _homeBloc)),
                     Padding(
-                      padding: EdgeInsets.only(
-                        left: 10.toWidth,
-                      ),
+                      padding: EdgeInsets.only(left: 10.toWidth),
                       child: Column(
                         children: [
                           Container(
@@ -191,15 +146,13 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  userLabel,
-                                  style: TextStyle(
-                                    color: CommonColors.kBlackIconColor,
-                                    fontFamily: CommonFonts.Poppins,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16.toFont,
-                                  ),
-                                ),
+                                Text(userLabel,
+                                    style: TextStyle(
+                                      color: CommonColors.kBlackIconColor,
+                                      fontFamily: CommonFonts.Poppins,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16.toFont,
+                                    )),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -213,9 +166,7 @@ class _HomePageState extends State<HomePage> {
                                         size: 25.toHeight,
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 10.toHeight,
-                                    ),
+                                    SizedBox(width: 10.toHeight),
                                     GestureDetector(
                                       onTap: () {
                                         openDrawer(context, properties);
@@ -231,23 +182,15 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 10.toHeight,
-                          ),
-                          CustomTable(
-                            allRecords: getFilteredArray(allRecords),
-                          ),
+                          SizedBox(height: 10.toHeight),
+                          CustomTable(allRecords: getFilteredArray(allRecords, checkedProperties)),
                         ],
                       ),
                     )
                   ],
                 );
               }
-              return const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.blue,
-                ),
-              );
+              return const CircularIndicator();
             },
           ),
         ),

@@ -24,9 +24,7 @@ class CustomTableCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.toWidth,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 10.toWidth),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(

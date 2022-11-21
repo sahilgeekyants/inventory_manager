@@ -84,9 +84,7 @@ class _CustomTableState extends State<CustomTable> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        right: 10.toWidth,
-      ),
+      padding: EdgeInsets.only(right: 10.toWidth),
       height: 575.toHeight,
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -123,9 +121,7 @@ class _CustomTableState extends State<CustomTable> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 10.toWidth,
-                                      ),
+                                      SizedBox(width: 10.toWidth),
                                       TableColumnSortButton(
                                         onPressed: () {},
                                       ),
@@ -180,9 +176,7 @@ class _CustomTableState extends State<CustomTable> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 10.toWidth,
-                                      ),
+                                      SizedBox(width: 10.toWidth),
                                       TableColumnSortButton(
                                         onPressed: () {},
                                       ),

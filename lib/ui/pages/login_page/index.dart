@@ -13,6 +13,7 @@ import 'package:inventory_manager/resources/common_assets.dart';
 import 'package:inventory_manager/resources/common_colors.dart';
 import 'package:inventory_manager/resources/common_fonts.dart';
 import 'package:inventory_manager/routes/route_util.dart';
+import 'package:inventory_manager/ui/components/circular_indicator.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
 
 class LoginPage extends StatefulWidget {
@@ -62,10 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: CommonColors.kPrimaryBlueColor,
       resizeToAvoidBottomInset: true,
       body: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 20.toHeight,
-          horizontal: 30.toWidth,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 20.toHeight, horizontal: 30.toWidth),
         child: BlocConsumer<LoginBloc, LoginState>(
           bloc: _loginBloc,
           listener: (context, LoginState state) {
@@ -91,11 +89,7 @@ class _LoginPageState extends State<LoginPage> {
           builder: (context, LoginState state) {
             if (state is LoginInitialState && state.isLoading == true) {
               if (kDebugMode) print('in UI builder loading - state : $state');
-              return const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.blue,
-                ),
-              );
+              return const CircularIndicator();
             }
             return ListView(
               children: [
@@ -105,9 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                   // child: SvgPicture.asset(
                   //   CommonAssets.twoPersonGroupImage,
                   // ),
-                  child: Image.asset(
-                    CommonAssets.twoPersonGroupPngImage,
-                  ),
+                  child: Image.asset(CommonAssets.twoPersonGroupPngImage),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,9 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     //   height: 30.toHeight,
                     //   child: Image.asset(CommonAssets.logoPilogPng),
                     // ),
-                    SizedBox(
-                      height: 10.toHeight,
-                    ),
+                    SizedBox(height: 10.toHeight),
                     Text(
                       "Sign in to",
                       style: TextStyle(

@@ -13,15 +13,9 @@ class TableColumnSortButton extends StatelessWidget {
         height: 14.toHeight,
         child: Column(
           children: [
-            Expanded(
-              child: Image.asset(CommonAssets.topIndicator),
-            ),
-            SizedBox(
-              height: 0.2.toHeight,
-            ),
-            Expanded(
-              child: Image.asset(CommonAssets.bottomIndicator),
-            ),
+            Expanded(child: Image.asset(CommonAssets.topIndicator)),
+            SizedBox(height: 0.2.toHeight),
+            Expanded(child: Image.asset(CommonAssets.bottomIndicator)),
           ],
         ),
       ),

@@ -37,22 +37,6 @@ class MyLocalStorage {
     return _prefs.getString("self_role");
   }
 
-  // Future setToken(token) async {
-  //   _prefs = await SharedPreferences.getInstance();
-  //   _prefs.setString("access_token", token);
-  // }
-
-  // Future getToken() async {
-  //   _prefs = await SharedPreferences.getInstance();
-  //   var token = _prefs.getString("access_token");
-  //   return token;
-  // }
-
-  // Future setDeviceId(String deviceId) async {
-  //   _prefs = await SharedPreferences.getInstance();
-  //   _prefs.setString("device_id", deviceId);
-  // }
-
   Future clearUserAndToken() async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.clear();
@@ -70,16 +54,6 @@ class MyLocalStorage {
     _prefs = await SharedPreferences.getInstance();
     return _prefs.getBool("is_user_logged_in") ?? false;
   }
-
-  // Future getUserId() async {
-  //   _prefs = await SharedPreferences.getInstance();
-  //   return _prefs.getInt("userId");
-  // }
-
-  // Future getDeviceId() async {
-  //   _prefs = await SharedPreferences.getInstance();
-  //   return _prefs.getString("device_id");
-  // }
 }
 
 MyLocalStorage localStorage = MyLocalStorage();

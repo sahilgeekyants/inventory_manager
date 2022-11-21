@@ -17,9 +17,7 @@ class BottomModalFiltersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 2.toWidth,
-      ),
+      padding: EdgeInsets.symmetric(vertical: 2.toWidth),
       width: MediaQuery.of(context).size.width,
       height: 200.toHeight,
       child: SingleChildScrollView(
@@ -68,9 +66,7 @@ class BottomModalFiltersList extends StatelessWidget {
                         );
                       },
                     ),
-                    SizedBox(
-                      width: 10.toWidth,
-                    ),
+                    SizedBox(width: 10.toWidth),
                     Flexible(
                       child: Text(
                         fieldData[0],

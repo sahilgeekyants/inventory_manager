@@ -39,17 +39,13 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 20.toHeight,
-          horizontal: 20.toWidth,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 20.toHeight, horizontal: 20.toWidth),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.toHeight),
-            topRight: Radius.circular(10.toHeight),
-          ),
-        ),
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.toHeight),
+              topRight: Radius.circular(10.toHeight),
+            )),
         height: 700.toHeight,
         child: Column(
           children: [
@@ -83,11 +79,9 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                       checkedProperties.length,
                       (index) => true,
                     );
-                    setState(
-                      () {
-                        checkedProperties = newList;
-                      },
-                    );
+                    setState(() {
+                      checkedProperties = newList;
+                    });
                   },
                   child: Text(
                     "Reset",
@@ -101,13 +95,9 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 20.toHeight,
-            ),
+            SizedBox(height: 20.toHeight),
             const BottomModalSearchBox(),
-            SizedBox(
-              height: 20.toHeight,
-            ),
+            SizedBox(height: 20.toHeight),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,9 +109,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(
-                  height: 5.toHeight,
-                ),
+                SizedBox(height: 5.toHeight),
                 BottomModalFiltersList(
                   properties: properties,
                   checkedProperties: checkedProperties,

@@ -136,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                     focusNode: userNameFocusNode,
                     keyboardType: TextInputType.text,
                     onChanged: (String val) {
+                      userNameVal = val;
                       if (kDebugMode) print('username changed val : $val');
                     },
                     onSubmitted: (String val) {
@@ -189,6 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     onChanged: (String val) {
+                      passwordVal = val;
                       if (kDebugMode) print('password changed val : $val');
                     },
                     onSubmitted: (String val) {

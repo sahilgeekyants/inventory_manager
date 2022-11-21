@@ -17,7 +17,6 @@ import 'package:inventory_manager/ui/pages/home_page/components/table/index.dart
 import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 import 'package:inventory_manager/utils/constants/user_roles.dart';
 import 'package:inventory_manager/utils/screen_util.dart';
-import 'package:inventory_manager/utils/constants/product_fields_data.dart';
 
 class HomePage extends StatefulWidget {
   final HomePageBlocModel homePageBlocModel;
@@ -145,13 +144,33 @@ class _HomePageState extends State<HomePage> {
                 int serialNumber = 1;
                 String initialRecordNumber;
                 List<String> properties = [];
+                //added temp code to make the rows count to exact index-1
+                int maxIndex = 10;
                 for (var productInfo in productsData!) {
-                  infoJson = ProductInfo().toJson(productInfo);
-                  allRecords[serialNumber.toString()] = infoJson;
-                  serialNumber++;
-                  initialRecordNumber = allRecords.keys.toList()[0];
-                  properties = allRecords[initialRecordNumber]!.keys.toList();
+                  if (serialNumber < maxIndex) {
+                    //temp condition
+                    infoJson = ProductInfo().toJson(productInfo);
+                    allRecords[serialNumber.toString()] = infoJson;
+                    serialNumber++;
+                    initialRecordNumber = allRecords.keys.toList()[0];
+                    properties = allRecords[initialRecordNumber]!.keys.toList();
+                  }
                 }
+                //
+                if (allRecords.isNotEmpty && serialNumber < maxIndex) {
+                  infoJson = ProductInfo().toJson(productsData[0]);
+                  do {
+                    allRecords[serialNumber.toString()] = infoJson;
+                    serialNumber++;
+                  } while (serialNumber < maxIndex);
+                }
+                // else if (serialNumber > maxIndex) {
+                //   do {
+                //     allRecords.remove((serialNumber - 1).toString());
+                //     serialNumber--;
+                //   } while (serialNumber > maxIndex);
+                // }
+                //
                 UserRole userRole = state.userRole;
                 String userLabel = (userRole == UserRole.SURVEYOR_QC) ? 'Data Surveyor QC' : 'Data Surveyor';
                 return Column(

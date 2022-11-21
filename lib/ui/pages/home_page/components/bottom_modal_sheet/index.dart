@@ -60,6 +60,7 @@ class _BottomModalWidgetState extends State<BottomModalWidget> {
                 GestureDetector(
                   onTap: () {
                     //ON tap of back button
+                    Navigator.pop(context, checkedProperties);
                   },
                   child: Icon(
                     Icons.arrow_back_ios_new,

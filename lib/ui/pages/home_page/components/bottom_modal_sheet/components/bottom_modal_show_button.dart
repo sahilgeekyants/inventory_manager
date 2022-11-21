@@ -24,7 +24,7 @@ class BottomModalShowButton extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: const Color(55529242),
+                color: const Color(0x034f4f1a),
                 blurRadius: 24.toHeight,
                 offset: const Offset(
                   0,

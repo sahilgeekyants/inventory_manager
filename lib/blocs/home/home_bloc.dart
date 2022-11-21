@@ -38,10 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           orgId: orgId!,
           forRole: isRoleQC ? UserRole.SURVEYOR_QC : UserRole.SURVEYOR,
         );
-        if (kDebugMode) {
-          print('getTableData function returned resoponse : ${response.body?.data ?? ''}');
-          print('getTableData function returned status : ${response.status}');
-        }
+        if (kDebugMode) {}
         if (response.status!) {
           if (response.body!.data is ProductsList) {
             productsList = response.body!.data;
